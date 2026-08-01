@@ -3,8 +3,16 @@
   "name": "tanstack-start-app",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
+  "main": "src/server.ts",
   "ai": {
-    "binding": "AI"
-  }
+    "binding": "AI",
+    "remote": true
+  },
+  "workflows": [
+    {
+      "name": "bonsai-workflow",
+      "binding": "BONSAI_WORKFLOW",
+      "class_name": "BonsaiWorkflow"
+    }
+  ]
 }
