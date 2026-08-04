@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
+import startCreateCourseWorkflow from "#/functions/startCreateCourseWorkflow";
 
 export const Route = createFileRoute("/")({ component: HomePage });
 
@@ -14,6 +16,9 @@ function HomePage() {
 	const [description, setDescription] = useState("");
 	const [files, setFiles] = useState<File[]>([]);
 	const [submitted, setSubmitted] = useState(false);
+
+	const workflow = useServerFn(startCreateCourseWorkflow);
+	const navigate = useNavigate({ from: "/" });
 
 	function addFiles(fileList: FileList | null) {
 		if (!fileList) return;
@@ -36,9 +41,16 @@ function HomePage() {
 		);
 	}
 
-	function submitLearningGoal(event: React.FormEvent<HTMLFormElement>) {
+	async function submitLearningGoal(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		if (!description.trim() && files.length === 0) return;
+
+		const { success, workflowId } = await workflow({ data: { description } });
+
+		if (!success) return;
+
+		navigate({ to: "/wait", search: { workflowId } });
+
 		setSubmitted(true);
 	}
 

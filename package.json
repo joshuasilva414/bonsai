@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
+    "workers:typegen": "wrangler types",
     "build": "vite build",
     "preview": "vite preview",
     "format": "biome format",
@@ -16,6 +17,7 @@
     "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.28",
     "@ai-sdk/react": "^4.0.50",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",

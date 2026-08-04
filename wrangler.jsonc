@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "bonsai",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
@@ -10,9 +10,9 @@
   },
   "workflows": [
     {
-      "name": "bonsai-workflow",
-      "binding": "BONSAI_WORKFLOW",
-      "class_name": "BonsaiWorkflow"
+      "name": "create-course-workflow",
+      "binding": "CREATE_COURSE_WORKFLOW",
+      "class_name": "CreateCourseWorkflow"
     }
   ]
 }

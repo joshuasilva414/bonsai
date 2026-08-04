@@ -3,17 +3,31 @@ import {
 	type WorkflowEvent,
 	type WorkflowStep,
 } from "cloudflare:workers";
+import { generateCurriculumTree } from "#/ai/generate";
+import { createCoursePrompt } from "#/ai/prompts/create-course";
 
-type BonsaiWorkflowParams = Record<string, never>;
+type CreateCourseWorkflowParams = { description: string };
 
-export class BonsaiWorkflow extends WorkflowEntrypoint<
+export class CreateCourseWorkflow extends WorkflowEntrypoint<
 	Env,
-	BonsaiWorkflowParams
+	CreateCourseWorkflowParams
 > {
 	async run(
-		_event: WorkflowEvent<BonsaiWorkflowParams>,
-		_step: WorkflowStep,
-	): Promise<void> {
-		// Workflow steps will be added here.
+		event: WorkflowEvent<CreateCourseWorkflowParams>,
+		step: WorkflowStep,
+	) {
+		const tree = await step.do(
+			"generate curriculum tree",
+			async () =>
+				await generateCurriculumTree(
+					createCoursePrompt`${event.payload.description}`,
+				),
+		);
+
+		return {
+			tree,
+		};
+
+		// TODO: Create course structures
 	}
 }

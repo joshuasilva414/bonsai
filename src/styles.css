@@ -1141,3 +1141,327 @@ body::after {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Workflow progress and generated curriculum */
+
+.workflow-page {
+  width: min(980px, calc(100% - 2rem));
+  min-height: calc(100vh - 12rem);
+  margin: 0 auto;
+  padding: clamp(4rem, 9vw, 7rem) 0;
+}
+
+.workflow-state {
+  width: min(620px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.workflow-state-label {
+  margin: 0 0 0.8rem;
+  color: var(--bonsai-green-bright);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.workflow-state h1,
+.curriculum-header h1 {
+  margin: 0;
+  color: var(--bonsai-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.workflow-state h1 {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  line-height: 1;
+}
+
+.workflow-state-copy {
+  width: min(560px, 100%);
+  margin: 1.35rem auto 0;
+  color: var(--bonsai-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.workflow-growth {
+  position: relative;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto 1.6rem;
+}
+
+.workflow-growth::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.55rem;
+  width: 2px;
+  height: 2.6rem;
+  border-radius: 999px;
+  background: var(--bonsai-green);
+  transform-origin: bottom;
+  animation: workflow-grow 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+}
+
+.workflow-growth span {
+  position: absolute;
+  z-index: 1;
+  width: 1.5rem;
+  height: 0.9rem;
+  border-radius: 80% 10% 80% 10%;
+  background: var(--bonsai-green-bright);
+  animation: workflow-leaf 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+}
+
+.workflow-growth span:nth-child(1) {
+  left: 0.72rem;
+  bottom: 1.15rem;
+  transform: rotate(18deg);
+}
+
+.workflow-growth span:nth-child(2) {
+  right: 0.72rem;
+  bottom: 1.85rem;
+  transform: rotate(102deg);
+  animation-delay: 160ms;
+}
+
+.workflow-growth span:nth-child(3) {
+  left: 0.92rem;
+  bottom: 2.6rem;
+  transform: rotate(30deg) scale(0.82);
+  animation-delay: 320ms;
+}
+
+.workflow-skeleton {
+  width: min(500px, 88%);
+  margin: 2.5rem auto 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.workflow-skeleton span {
+  height: 0.72rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #dde7dc 25%, #f7faf4 50%, #dde7dc 75%);
+  background-size: 200% 100%;
+  animation: workflow-shimmer 1.8s linear infinite;
+}
+
+.workflow-skeleton span:nth-child(2) {
+  width: 82%;
+}
+
+.workflow-skeleton span:nth-child(3) {
+  width: 64%;
+}
+
+.workflow-state-mark {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(151, 67, 52, 0.28);
+  border-radius: 50%;
+  background: rgba(151, 67, 52, 0.08);
+  color: #7f3529;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.5rem;
+}
+
+.workflow-state-error .workflow-state-label {
+  color: #7f3529;
+}
+
+.workflow-actions {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.workflow-actions button,
+.workflow-actions a,
+.curriculum-header > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c9d5c7;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 253, 0.72);
+  color: var(--bonsai-green);
+  padding: 0.72rem 1rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.workflow-actions button:hover,
+.workflow-actions a:hover,
+.curriculum-header > a:hover {
+  border-color: #aebfac;
+  background: white;
+}
+
+.curriculum-result {
+  width: 100%;
+}
+
+.curriculum-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid rgba(48, 78, 56, 0.14);
+  padding-bottom: 2rem;
+}
+
+.curriculum-header h1 {
+  max-width: 18ch;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.98;
+}
+
+.curriculum-header div > p:last-child {
+  margin: 1rem 0 0;
+  color: var(--bonsai-muted);
+  font-size: 0.82rem;
+}
+
+.curriculum-topics,
+.curriculum-subtopics,
+.curriculum-subtopics ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.curriculum-topics > li {
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  border-bottom: 1px solid rgba(48, 78, 56, 0.12);
+}
+
+.topic-heading {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.topic-heading > span {
+  color: var(--bonsai-green-bright);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 0.78rem;
+}
+
+.topic-heading h2 {
+  margin: 0;
+  color: var(--bonsai-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1.55rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.curriculum-subtopics {
+  margin: 1.8rem 0 0 3.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem 3rem;
+}
+
+.curriculum-subtopics h3 {
+  margin: 0 0 0.75rem;
+  color: #3e4c41;
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.curriculum-subtopics ul {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.curriculum-subtopics ul li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--bonsai-muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.curriculum-subtopics ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: #83a28b;
+}
+
+@keyframes workflow-grow {
+  from {
+    transform: scaleY(0.72);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes workflow-leaf {
+  from {
+    opacity: 0.48;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes workflow-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .workflow-page {
+    padding-top: 3.25rem;
+  }
+
+  .curriculum-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .curriculum-subtopics {
+    margin-left: 0;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflow-growth::after,
+  .workflow-growth span,
+  .workflow-skeleton span {
+    animation: none;
+  }
+}
