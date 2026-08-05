@@ -1,9 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bonsai",
-  // "compatibility_date": "2025-09-02",
-  "compatibility_date": "2022-11-07",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2025-09-02",
+  // "compatibility_date": "2022-11-07",
+  "compatibility_flags": ["nodejs_compat_v2"],
   "d1_databases": [{
     "binding": "DB",
     "database_name": "DB",

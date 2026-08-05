@@ -24,6 +24,8 @@ export class CreateCourseWorkflow extends WorkflowEntrypoint<
 				),
 		);
 
+		console.log(JSON.stringify(tree));
+
 		return {
 			tree,
 		};

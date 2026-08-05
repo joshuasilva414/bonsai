@@ -21,7 +21,8 @@ function WaitPage() {
 			const s = query.state.data?.status;
 			if (s === "complete" || s === "errored" || s === "terminated")
 				return false;
-			return 2000;
+			console.log("triggered!");
+			return 5000;
 		},
 	});
 
