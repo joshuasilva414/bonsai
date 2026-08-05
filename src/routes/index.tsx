@@ -1,6 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { ArrowRight, FileText, Paperclip, Sparkles, X } from "lucide-react";
 import { useRef, useState } from "react";
+import { Button } from "#/components/ui/button";
+import { Textarea } from "#/components/ui/textarea";
 import startCreateCourseWorkflow from "#/functions/startCreateCourseWorkflow";
 
 export const Route = createFileRoute("/")({ component: HomePage });
@@ -61,9 +64,7 @@ function HomePage() {
 
 			<section className="hero-section" aria-labelledby="hero-title">
 				<div className="hero-eyebrow rise-in">
-					<span className="eyebrow-mark" aria-hidden="true">
-						✦
-					</span>
+					<Sparkles className="eyebrow-mark" aria-hidden="true" />
 					Your private, adaptive learning space
 				</div>
 
@@ -82,7 +83,7 @@ function HomePage() {
 					<label className="sr-only" htmlFor="learning-description">
 						Describe what you want to learn
 					</label>
-					<textarea
+					<Textarea
 						id="learning-description"
 						value={description}
 						onChange={(event) => {
@@ -100,15 +101,17 @@ function HomePage() {
 									className="attachment-chip"
 									key={`${file.name}-${file.size}`}
 								>
-									<span className="file-page" aria-hidden="true" />
+									<FileText className="file-page" aria-hidden="true" />
 									<span className="attachment-name">{file.name}</span>
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon-xs"
 										onClick={() => removeFile(index)}
 										aria-label={`Remove ${file.name}`}
 									>
-										×
-									</button>
+										<X aria-hidden="true" />
+									</Button>
 								</li>
 							))}
 						</ul>
@@ -128,43 +131,43 @@ function HomePage() {
 									setSubmitted(false);
 								}}
 							/>
-							<button
+							<Button
 								className="attach-button"
 								type="button"
+								variant="ghost"
 								onClick={() => fileInputRef.current?.click()}
 							>
-								<span className="paperclip" aria-hidden="true">
-									+
-								</span>
+								<Paperclip className="paperclip" aria-hidden="true" />
 								Attach sources
-							</button>
+							</Button>
 							<span className="file-hint">PDF, DOCX, TXT, PPTX</span>
 						</div>
 
-						<button
+						<Button
 							className="grow-button"
 							type="submit"
 							disabled={!description.trim() && files.length === 0}
 						>
 							Grow my path
-							<span aria-hidden="true">→</span>
-						</button>
+							<ArrowRight aria-hidden="true" />
+						</Button>
 					</div>
 				</form>
 
 				<fieldset className="prompt-starters rise-in">
 					<legend>Try asking</legend>
 					{starterPrompts.map((prompt) => (
-						<button
+						<Button
 							key={prompt}
 							type="button"
+							variant="outline"
 							onClick={() => {
 								setDescription(prompt);
 								setSubmitted(false);
 							}}
 						>
 							{prompt}
-						</button>
+						</Button>
 					))}
 				</fieldset>
 

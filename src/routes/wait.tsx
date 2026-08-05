@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { RotateCcw } from "lucide-react";
+import { Button } from "#/components/ui/button";
 import getWorkflowStatus from "#/functions/getWorkflowStatus";
 import type { Subject } from "#/lib/curriculum";
 
@@ -37,9 +39,10 @@ function WaitPage() {
 					<h1>Something interrupted the connection.</h1>
 					<p className="workflow-state-copy">{workflowStatus.error.message}</p>
 					<div className="workflow-actions">
-						<button type="button" onClick={() => workflowStatus.refetch()}>
+						<Button type="button" onClick={() => workflowStatus.refetch()}>
+							<RotateCcw aria-hidden="true" />
 							Try again
-						</button>
+						</Button>
 						<Link to="/">Return home</Link>
 					</div>
 				</div>

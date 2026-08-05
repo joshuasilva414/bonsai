@@ -25,10 +25,10 @@ export const Subject = NamedCurriculumNode.extend({
 export type Subject = z.infer<typeof Subject>;
 
 export const curriculumTreeLevels = [
-	"objective",
-	"subtopic",
-	"topic",
 	"subject",
+	"topic",
+	"subtopic",
+	"objective",
 ] as const;
 export type CurriculumTreeLevel = (typeof curriculumTreeLevels)[number];
 export type CurriculumTreeLevelIndex = IndexForArray<

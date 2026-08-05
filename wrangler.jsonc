@@ -6,9 +6,10 @@
   "compatibility_flags": ["nodejs_compat_v2"],
   "d1_databases": [{
     "binding": "DB",
-    "database_name": "DB",
+    "database_name": "bonsai_dev",
     "database_id": "3468fbf5-a364-4c44-8a10-d62753440e59",
-    "migrations_dir": "drizzle"
+    "migrations_dir": "drizzle",
+    "migrations_pattern": "drizzle/*/migration.sql"
   }],
   "main": "src/server.ts",
   "ai": {
