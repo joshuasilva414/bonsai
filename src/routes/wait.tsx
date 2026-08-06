@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { RotateCcw } from "lucide-react";
 import { Button } from "#/components/ui/button";
-import getWorkflowStatus from "#/functions/getWorkflowStatus";
+import { getWorkflowStatus } from "#/functions/workflows";
 import type { Subject } from "#/lib/curriculum";
 
 export const Route = createFileRoute("/wait")({

@@ -1,10 +1,11 @@
 import { env } from "cloudflare:workers";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { Subject } from "#/lib/curriculum";
+import { ensureSession } from "#/lib/auth.functions";
+import { SubjectSchema } from "#/lib/curriculum";
 
 const WorkflowOutput = z.object({
-	tree: Subject,
+	tree: SubjectSchema,
 });
 
 export const getWorkflowStatus = createServerFn({ method: "GET" })
@@ -19,6 +20,8 @@ export const getWorkflowStatus = createServerFn({ method: "GET" })
 
 			const details = await instance.status();
 			const output = WorkflowOutput.safeParse(details.output);
+
+			console.log(details);
 
 			return {
 				workflowId: instance.id,
@@ -37,9 +40,11 @@ export const startCreateCourseWorkflow = createServerFn({ method: "POST" })
 			description: z.string().min(5),
 		}),
 	)
-	.handler(async ({ data }) => {
+	.handler(async ({ data: { description } }) => {
+		const session = await ensureSession();
+
 		const instance = await env.CREATE_COURSE_WORKFLOW.create({
-			params: data,
+			params: { description, userId: session.user.id },
 		});
 
 		return {

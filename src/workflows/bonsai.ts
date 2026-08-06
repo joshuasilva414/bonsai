@@ -5,8 +5,11 @@ import {
 } from "cloudflare:workers";
 import { generateCurriculumTree } from "#/ai/generate";
 import { createCoursePrompt } from "#/ai/prompts/create-course";
+import type { Subject } from "#/lib/curriculum";
+import { flattenCurriculumTree } from "#/lib/curriculum";
+import { saveCurriculumTree } from "#/lib/db/queries";
 
-type CreateCourseWorkflowParams = { description: string };
+type CreateCourseWorkflowParams = { description: string; userId: string };
 
 export class CreateCourseWorkflow extends WorkflowEntrypoint<
 	Env,
@@ -16,20 +19,28 @@ export class CreateCourseWorkflow extends WorkflowEntrypoint<
 		event: WorkflowEvent<CreateCourseWorkflowParams>,
 		step: WorkflowStep,
 	) {
-		const tree = await step.do(
+		const tree: Subject = await step.do(
 			"generate curriculum tree",
-			async () =>
-				await generateCurriculumTree(
+			async () => {
+				const result = await generateCurriculumTree(
 					createCoursePrompt`${event.payload.description}`,
-				),
+				);
+				// console.log(JSON.stringify(tree));
+				return result;
+			},
 		);
 
-		console.log(JSON.stringify(tree));
+		const courseId = await step.do("save curriculum tree", async () => {
+			const { curriculum, nodes } = flattenCurriculumTree(
+				tree,
+				event.payload.userId,
+			);
+			return await saveCurriculumTree(curriculum, nodes);
+		});
 
 		return {
 			tree,
+			courseId,
 		};
-
-		// TODO: Create course structures
 	}
 }

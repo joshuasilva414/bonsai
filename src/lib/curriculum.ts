@@ -1,4 +1,6 @@
+import { nanoid } from "nanoid";
 import { z } from "zod";
+import type { NewCurriculum, NewCurriculumNode } from "./db/schema";
 import type { IndexForArray } from "./utils";
 
 export const NamedCurriculumNode = z.object({
@@ -9,20 +11,20 @@ export type NamedCurriculumNode = z.infer<typeof NamedCurriculumNode>;
 export const LearningObjective = NamedCurriculumNode;
 export type LearningObjective = z.infer<typeof LearningObjective>;
 
-export const Subtopic = NamedCurriculumNode.extend({
+export const SubtopicSchema = NamedCurriculumNode.extend({
 	objectives: z.array(LearningObjective).min(1),
 });
-export type Subtopic = z.infer<typeof Subtopic>;
+export type Subtopic = z.infer<typeof SubtopicSchema>;
 
-export const Topic = NamedCurriculumNode.extend({
-	subtopics: z.array(Subtopic).min(1),
+export const TopicSchema = NamedCurriculumNode.extend({
+	subtopics: z.array(SubtopicSchema).min(1),
 });
-export type Topic = z.infer<typeof Topic>;
+export type Topic = z.infer<typeof TopicSchema>;
 
-export const Subject = NamedCurriculumNode.extend({
-	topics: z.array(Topic).min(3),
+export const SubjectSchema = NamedCurriculumNode.extend({
+	topics: z.array(TopicSchema).min(3),
 });
-export type Subject = z.infer<typeof Subject>;
+export type Subject = z.infer<typeof SubjectSchema>;
 
 export const curriculumTreeLevels = [
 	"subject",
@@ -44,38 +46,48 @@ export function childrenOf(node: CurriculumNode): CurriculumNode[] {
 	return [];
 }
 
-type FlatCurriculumNode = {
-	id: string;
-	parentId: string | null;
-	name: string;
-	levelIndex: CurriculumTreeLevelIndex;
-	position: number;
+type FlatCurriculumTree = {
+	curriculum: NewCurriculum;
+	nodes: NewCurriculumNode[];
 };
+export function flattenCurriculumTree(
+	root: Subject,
+	userId: string,
+): FlatCurriculumTree {
+	const curriculumId = nanoid();
+	const nodes: NewCurriculumNode[] = [];
 
-export function flattenCurriculumTree(root: Subject): FlatCurriculumNode[] {
-	const rows: FlatCurriculumNode[] = [];
 	function visit(
-		node: NamedCurriculumNode,
+		node: CurriculumNode,
 		parentId: string | null,
 		levelIndex: CurriculumTreeLevelIndex,
 		position: number,
 	) {
-		const id = crypto.randomUUID();
+		const id = nanoid();
 
-		rows.push({
+		nodes.push({
 			id,
+			curriculumId,
 			parentId,
 			name: node.name,
-			levelIndex,
+			level: curriculumTreeLevels[levelIndex],
 			position,
 		});
 
 		childrenOf(node).forEach((child, childPosition) => {
-			const childLevel = (levelIndex + 1) as CurriculumTreeLevelIndex;
-			visit(child, id, childLevel, childPosition);
+			visit(
+				child,
+				id,
+				(levelIndex + 1) as CurriculumTreeLevelIndex,
+				childPosition,
+			);
 		});
 	}
 
 	visit(root, null, 0, 0);
-	return rows;
+
+	return {
+		curriculum: { id: curriculumId, userId },
+		nodes,
+	};
 }

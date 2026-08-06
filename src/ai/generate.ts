@@ -1,11 +1,11 @@
 import { generateText, Output } from "ai";
-import { Subject } from "#/lib/curriculum";
+import { type Subject, SubjectSchema } from "#/lib/curriculum";
 import { TINY_MODEL } from "@/ai/models";
 
-export async function generateCurriculumTree(prompt: string) {
+export async function generateCurriculumTree(prompt: string): Promise<Subject> {
 	const { output } = await generateText({
 		model: TINY_MODEL,
-		output: Output.object({ schema: Subject }),
+		output: Output.object({ schema: SubjectSchema }),
 		prompt,
 	});
 

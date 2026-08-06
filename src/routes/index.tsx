@@ -4,7 +4,7 @@ import { ArrowRight, FileText, Paperclip, Sparkles, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "#/components/ui/button";
 import { Textarea } from "#/components/ui/textarea";
-import startCreateCourseWorkflow from "#/functions/startCreateCourseWorkflow";
+import { startCreateCourseWorkflow } from "#/functions/workflows";
 
 export const Route = createFileRoute("/")({ component: HomePage });
 

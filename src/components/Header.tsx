@@ -29,7 +29,11 @@ export default function Header() {
 
 				<div className="site-nav-links">
 					<a href="/#how-it-works">How it works</a>
-					<a href="/#manifesto">Manifesto</a>
+					{session?.user ? (
+						<Link to="/courses">My courses</Link>
+					) : (
+						<a href="/#manifesto">Manifesto</a>
+					)}
 				</div>
 
 				<div className="site-nav-actions">
