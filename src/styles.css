@@ -31,6 +31,23 @@
   --link-bg-hover: rgba(255, 255, 255, 0.9);
   --hero-a: rgba(79, 184, 178, 0.36);
   --hero-b: rgba(47, 106, 74, 0.2);
+  --bonsai-ink: #1a211b;
+  --bonsai-muted: #687168;
+  --bonsai-green: #1f5c3c;
+  --bonsai-green-bright: #2d7350;
+  --bonsai-mist: #edf2eb;
+  --bonsai-paper: #fbfcf8;
+  --bonsai-border: #dfe5dc;
+  --bonsai-page-glow-a: rgba(209, 225, 207, 0.52);
+  --bonsai-page-glow-b: rgba(228, 233, 216, 0.72);
+  --bonsai-page-top: #f8faf4;
+  --bonsai-page-mid: #f5f8f1;
+  --bonsai-page-bottom: #eef4eb;
+  --bonsai-page-dot: rgba(35, 74, 51, 0.2);
+  --bonsai-action: #245f42;
+  --bonsai-action-hover: #194b34;
+  --bonsai-action-foreground: #f7fbf8;
+  --bonsai-action-border: #194b34;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -85,6 +102,49 @@
   --link-bg-hover: rgba(24, 44, 49, 0.8);
   --hero-a: rgba(96, 215, 207, 0.18);
   --hero-b: rgba(110, 200, 154, 0.12);
+  --bonsai-ink: #e5eee7;
+  --bonsai-muted: #aebdb1;
+  --bonsai-green: #80c99d;
+  --bonsai-green-bright: #9bdbb5;
+  --bonsai-mist: #15231a;
+  --bonsai-paper: #101813;
+  --bonsai-border: #314538;
+  --bonsai-page-glow-a: rgba(58, 116, 78, 0.22);
+  --bonsai-page-glow-b: rgba(72, 117, 91, 0.16);
+  --bonsai-page-top: #0d1711;
+  --bonsai-page-mid: #101a13;
+  --bonsai-page-bottom: #0a120d;
+  --bonsai-page-dot: rgba(151, 205, 169, 0.13);
+  --bonsai-action: #285f43;
+  --bonsai-action-hover: #337653;
+  --bonsai-action-foreground: #e7f5ec;
+  --bonsai-action-border: #438562;
+  --background: oklch(0.145 0.018 145);
+  --foreground: oklch(0.94 0.018 145);
+  --card: oklch(0.205 0.018 145);
+  --card-foreground: oklch(0.94 0.018 145);
+  --popover: oklch(0.205 0.018 145);
+  --popover-foreground: oklch(0.94 0.018 145);
+  --primary: oklch(0.78 0.105 145);
+  --primary-foreground: oklch(0.18 0.025 145);
+  --secondary: oklch(0.27 0.02 145);
+  --secondary-foreground: oklch(0.94 0.018 145);
+  --muted: oklch(0.27 0.02 145);
+  --muted-foreground: oklch(0.73 0.025 145);
+  --accent: oklch(0.27 0.02 145);
+  --accent-foreground: oklch(0.94 0.018 145);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.94 0.018 145 / 12%);
+  --input: oklch(0.94 0.018 145 / 16%);
+  --ring: oklch(0.7 0.08 145);
+  --sidebar: oklch(0.205 0.018 145);
+  --sidebar-foreground: oklch(0.94 0.018 145);
+  --sidebar-primary: oklch(0.78 0.105 145);
+  --sidebar-primary-foreground: oklch(0.18 0.025 145);
+  --sidebar-accent: oklch(0.27 0.02 145);
+  --sidebar-accent-foreground: oklch(0.94 0.018 145);
+  --sidebar-border: oklch(0.94 0.018 145 / 12%);
+  --sidebar-ring: oklch(0.7 0.08 145);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -108,6 +168,49 @@
     --link-bg-hover: rgba(24, 44, 49, 0.8);
     --hero-a: rgba(96, 215, 207, 0.18);
     --hero-b: rgba(110, 200, 154, 0.12);
+    --bonsai-ink: #e5eee7;
+    --bonsai-muted: #aebdb1;
+    --bonsai-green: #80c99d;
+    --bonsai-green-bright: #9bdbb5;
+    --bonsai-mist: #15231a;
+    --bonsai-paper: #101813;
+    --bonsai-border: #314538;
+    --bonsai-page-glow-a: rgba(58, 116, 78, 0.22);
+    --bonsai-page-glow-b: rgba(72, 117, 91, 0.16);
+    --bonsai-page-top: #0d1711;
+    --bonsai-page-mid: #101a13;
+    --bonsai-page-bottom: #0a120d;
+    --bonsai-page-dot: rgba(151, 205, 169, 0.13);
+    --bonsai-action: #285f43;
+    --bonsai-action-hover: #337653;
+    --bonsai-action-foreground: #e7f5ec;
+    --bonsai-action-border: #438562;
+    --background: oklch(0.145 0.018 145);
+    --foreground: oklch(0.94 0.018 145);
+    --card: oklch(0.205 0.018 145);
+    --card-foreground: oklch(0.94 0.018 145);
+    --popover: oklch(0.205 0.018 145);
+    --popover-foreground: oklch(0.94 0.018 145);
+    --primary: oklch(0.78 0.105 145);
+    --primary-foreground: oklch(0.18 0.025 145);
+    --secondary: oklch(0.27 0.02 145);
+    --secondary-foreground: oklch(0.94 0.018 145);
+    --muted: oklch(0.27 0.02 145);
+    --muted-foreground: oklch(0.73 0.025 145);
+    --accent: oklch(0.27 0.02 145);
+    --accent-foreground: oklch(0.94 0.018 145);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(0.94 0.018 145 / 12%);
+    --input: oklch(0.94 0.018 145 / 16%);
+    --ring: oklch(0.7 0.08 145);
+    --sidebar: oklch(0.205 0.018 145);
+    --sidebar-foreground: oklch(0.94 0.018 145);
+    --sidebar-primary: oklch(0.78 0.105 145);
+    --sidebar-primary-foreground: oklch(0.18 0.025 145);
+    --sidebar-accent: oklch(0.27 0.02 145);
+    --sidebar-accent-foreground: oklch(0.94 0.018 145);
+    --sidebar-border: oklch(0.94 0.018 145 / 12%);
+    --sidebar-ring: oklch(0.7 0.08 145);
   }
 }
 
@@ -500,34 +603,35 @@ a {
 
 /* Bonsai landing page */
 
-:root {
-  --bonsai-ink: #1a211b;
-  --bonsai-muted: #687168;
-  --bonsai-green: #1f5c3c;
-  --bonsai-green-bright: #2d7350;
-  --bonsai-mist: #edf2eb;
-  --bonsai-paper: #fbfcf8;
-  --bonsai-border: #dfe5dc;
-}
-
 body {
   min-height: 100vh;
   color: var(--bonsai-ink);
   background:
-    radial-gradient(circle at 10% 35%, rgba(209, 225, 207, 0.52), transparent 23rem),
-    radial-gradient(circle at 91% 22%, rgba(228, 233, 216, 0.72), transparent 25rem),
-    linear-gradient(180deg, #f8faf4 0%, #f5f8f1 65%, #eef4eb 100%);
+    radial-gradient(circle at 10% 35%, var(--bonsai-page-glow-a), transparent 23rem),
+    radial-gradient(circle at 91% 22%, var(--bonsai-page-glow-b), transparent 25rem),
+    linear-gradient(180deg, var(--bonsai-page-top) 0%, var(--bonsai-page-mid) 65%, var(--bonsai-page-bottom) 100%);
 }
 
 body::before {
   opacity: 0.22;
-  background-image: radial-gradient(rgba(35, 74, 51, 0.2) 0.5px, transparent 0.5px);
+  background-image: radial-gradient(var(--bonsai-page-dot) 0.5px, transparent 0.5px);
   background-size: 9px 9px;
   mask-image: linear-gradient(to bottom, black, transparent 76%);
 }
 
 body::after {
   display: none;
+}
+
+.site-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1 0 auto;
 }
 
 .site-header {
@@ -622,7 +726,7 @@ body::after {
 .text-button {
   border: 0;
   background: transparent;
-  color: #59635a;
+  color: var(--bonsai-muted);
   font: inherit;
   font-size: 0.82rem;
   font-weight: 650;
@@ -652,7 +756,7 @@ body::after {
   gap: 0.5rem;
   border: 1px solid rgba(48, 78, 56, 0.14);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
+  background: color-mix(in oklab, var(--surface-strong) 70%, transparent);
   color: var(--bonsai-ink);
   font: inherit;
   font-size: 0.78rem;
@@ -665,7 +769,7 @@ body::after {
 .theme-toggle:hover,
 .profile-button:hover {
   border-color: rgba(39, 103, 66, 0.3);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-strong);
   color: var(--bonsai-green);
 }
 
@@ -747,9 +851,9 @@ body::after {
 .nav-cta {
 	display: inline-flex;
 	align-items: center;
-	border: 1px solid #d3ddd1;
+  border: 1px solid var(--bonsai-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.67);
+  background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
   color: var(--bonsai-green);
   padding: 0.65rem 1.05rem;
 	font-size: 0.78rem;
@@ -760,8 +864,8 @@ body::after {
 }
 
 .nav-cta:hover {
-  border-color: #b8c9b8;
-  background: white;
+  border-color: color-mix(in oklab, var(--bonsai-green) 42%, var(--bonsai-border));
+  background: var(--surface-strong);
   transform: translateY(-1px);
 }
 
@@ -910,7 +1014,7 @@ body::after {
 
 .hero-title {
   margin: 1.15rem 0 0;
-  color: #182019;
+  color: var(--bonsai-ink);
   font-family: "Fraunces", Georgia, serif;
   font-size: clamp(3.25rem, 7.7vw, 6.25rem);
   font-weight: 500;
@@ -951,12 +1055,12 @@ body::after {
   overflow: hidden;
   border: 1px solid rgba(50, 83, 60, 0.16);
   border-radius: 1.55rem;
-  background: rgba(255, 255, 253, 0.93);
+  background: var(--surface-strong);
   text-align: left;
   box-shadow:
     0 30px 75px rgba(52, 81, 59, 0.13),
     0 8px 20px rgba(52, 81, 59, 0.08),
-    inset 0 1px 0 white;
+    inset 0 1px 0 var(--inset-glint);
   backdrop-filter: blur(18px);
 }
 
@@ -983,7 +1087,7 @@ body::after {
 }
 
 .learning-composer textarea::placeholder {
-  color: #8d968d;
+  color: var(--bonsai-muted);
 }
 
 .attachment-list {
@@ -1000,10 +1104,10 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  border: 1px solid #dce5da;
+  border: 1px solid var(--bonsai-border);
   border-radius: 0.55rem;
-  background: #f4f7f1;
-  color: #455047;
+  background: var(--bonsai-mist);
+  color: var(--bonsai-ink);
   padding: 0.38rem 0.45rem 0.38rem 0.55rem;
   font-size: 0.73rem;
   font-weight: 650;
@@ -1024,21 +1128,21 @@ body::after {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #788078;
+  color: var(--bonsai-muted);
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
 }
 
 .attachment-chip button:hover {
-  background: #e3e9e0;
+  background: color-mix(in oklab, var(--bonsai-green) 12%, var(--bonsai-mist));
   color: var(--bonsai-ink);
 }
 
 .file-page {
   width: 0.7rem;
   height: 0.85rem;
-  color: #78917f;
+  color: var(--bonsai-green);
   stroke-width: 1.8;
 }
 
@@ -1048,8 +1152,8 @@ body::after {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-top: 1px solid #edf0ea;
-  background: rgba(248, 250, 246, 0.72);
+  border-top: 1px solid var(--bonsai-border);
+  background: color-mix(in oklab, var(--surface) 80%, transparent);
   padding: 0.75rem 0.85rem 0.75rem 1.15rem;
 }
 
@@ -1066,7 +1170,7 @@ body::after {
   border: 0;
   border-radius: 0.6rem;
   background: transparent;
-  color: #49544a;
+  color: var(--bonsai-ink);
   padding: 0.45rem 0.35rem;
   font-size: 0.76rem;
   font-weight: 750;
@@ -1074,21 +1178,21 @@ body::after {
 }
 
 .attach-button:hover {
-  background: #ebf0e8;
+  background: var(--bonsai-mist);
   color: var(--bonsai-green);
 }
 
 .paperclip {
   width: 1.15rem;
   height: 1.15rem;
-  border: 1px solid #839287;
+  border: 1px solid var(--bonsai-muted);
   border-radius: 50%;
   padding: 0.2rem;
   stroke-width: 1.8;
 }
 
 .file-hint {
-  color: #a0a8a0;
+  color: var(--bonsai-muted);
   font-size: 0.66rem;
   letter-spacing: 0.03em;
 }
@@ -1098,24 +1202,29 @@ body::after {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  border: 0;
+  border: 1px solid var(--bonsai-action-border);
   border-radius: 0.8rem;
-  background: var(--bonsai-green);
-  color: white;
+  background: var(--bonsai-action);
+  color: var(--bonsai-action-foreground);
   padding: 0.83rem 1.1rem;
   font-size: 0.78rem;
   font-weight: 750;
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(29, 91, 58, 0.2);
+  box-shadow:
+    0 8px 20px color-mix(in oklab, var(--bonsai-action) 24%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--bonsai-action-foreground) 18%, transparent);
 }
 
 .grow-button:hover:not(:disabled) {
-  background: #174b30;
+  border-color: color-mix(in oklab, var(--bonsai-action-border) 72%, var(--bonsai-action-foreground));
+  background: var(--bonsai-action-hover);
   transform: translateY(-1px);
 }
 
 .grow-button:disabled {
-  background: #bdc7bd;
+  border-color: color-mix(in oklab, var(--bonsai-muted) 32%, var(--bonsai-mist));
+  background: color-mix(in oklab, var(--bonsai-muted) 45%, var(--bonsai-mist));
+  color: color-mix(in oklab, var(--bonsai-ink) 58%, transparent);
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -1130,7 +1239,7 @@ body::after {
 	gap: 0.55rem;
 	border: 0;
 	padding: 0;
-  color: #939b93;
+  color: var(--bonsai-muted);
   font-size: 0.68rem;
 }
 
@@ -1145,16 +1254,16 @@ body::after {
 .prompt-starters button {
   border: 1px solid rgba(67, 91, 72, 0.12);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.5);
-  color: #6b746c;
+  background: color-mix(in oklab, var(--surface) 74%, transparent);
+  color: var(--bonsai-muted);
   padding: 0.38rem 0.65rem;
   font: inherit;
   cursor: pointer;
 }
 
 .prompt-starters button:hover {
-  border-color: #c5d1c3;
-  background: rgba(255, 255, 255, 0.85);
+  border-color: color-mix(in oklab, var(--bonsai-green) 36%, var(--bonsai-border));
+  background: var(--surface-strong);
   color: var(--bonsai-green);
 }
 
@@ -1522,9 +1631,9 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #c9d5c7;
+  border: 1px solid var(--bonsai-border);
   border-radius: 0.75rem;
-  background: rgba(255, 255, 253, 0.72);
+  background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
   color: var(--bonsai-green);
   padding: 0.72rem 1rem;
   font: inherit;
@@ -1537,8 +1646,8 @@ body::after {
 .workflow-actions button:hover,
 .workflow-actions a:hover,
 .curriculum-header > a:hover {
-  border-color: #aebfac;
-  background: white;
+  border-color: color-mix(in oklab, var(--bonsai-green) 42%, var(--bonsai-border));
+  background: var(--surface-strong);
 }
 
 .curriculum-result {
@@ -1749,14 +1858,22 @@ body::after {
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  border: 1px solid color-mix(in oklab, var(--bonsai-green) 78%, black);
+  border: 1px solid var(--bonsai-action-border);
   border-radius: 0.7rem;
-  background: var(--bonsai-green);
-  color: white;
+  background: var(--bonsai-action);
+  color: var(--bonsai-action-foreground);
   padding: 0.75rem 1rem;
   font-size: 0.8rem;
   font-weight: 750;
   text-decoration: none;
+  box-shadow:
+    0 8px 20px color-mix(in oklab, var(--bonsai-action) 24%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--bonsai-action-foreground) 18%, transparent);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .courses-create-button svg {
@@ -1765,13 +1882,18 @@ body::after {
 }
 
 .courses-create-button:hover {
-  background: color-mix(in oklab, var(--bonsai-green) 84%, black);
-  color: white;
+  border-color: color-mix(in oklab, var(--bonsai-action-border) 72%, var(--bonsai-action-foreground));
+  background: var(--bonsai-action-hover);
+  color: var(--bonsai-action-foreground);
+  box-shadow:
+    0 10px 24px color-mix(in oklab, var(--bonsai-action) 30%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--bonsai-action-foreground) 22%, transparent);
   transform: translateY(-1px);
 }
 
 .courses-create-button:focus-visible,
-.course-outline-item summary:focus-visible {
+.course-card:focus-visible,
+.course-back-link:focus-visible {
   outline: 3px solid color-mix(in oklab, var(--lagoon) 28%, transparent);
   outline-offset: 3px;
 }
@@ -1800,31 +1922,40 @@ body::after {
   font-size: 0.7rem;
 }
 
-.course-outline-list {
-  border-top: 1px solid var(--line);
-}
-
-.course-outline-item {
-  border-bottom: 1px solid var(--line);
-}
-
-.course-outline-item summary {
-  min-height: 6.4rem;
+.course-card-grid {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
-  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
-  padding: 1rem 0.2rem;
-  list-style: none;
-  cursor: pointer;
 }
 
-.course-outline-item summary::-webkit-details-marker {
-  display: none;
+.course-card {
+  min-height: 13.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: color-mix(in oklab, var(--surface-strong) 78%, transparent);
+  color: var(--bonsai-ink);
+  padding: 1.15rem;
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.course-outline-item summary:hover .course-summary-copy strong {
-  color: var(--bonsai-green);
+.course-card:hover {
+  border-color: color-mix(in oklab, var(--bonsai-green) 38%, var(--line));
+  background: var(--surface-strong);
+  color: var(--bonsai-ink);
+  transform: translateY(-2px);
+}
+
+.course-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .course-book-mark {
@@ -1832,9 +1963,11 @@ body::after {
   height: 2.75rem;
   display: grid;
   place-items: center;
+  border: 1px solid var(--bonsai-action-border);
   border-radius: 0.7rem;
-  background: color-mix(in oklab, var(--bonsai-green) 10%, white);
-  color: var(--bonsai-green);
+  background: var(--bonsai-action);
+  color: var(--bonsai-action-foreground);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--bonsai-action-foreground) 18%, transparent);
 }
 
 .course-book-mark svg {
@@ -1842,50 +1975,105 @@ body::after {
   height: 1.2rem;
 }
 
-.course-summary-copy {
-  min-width: 0;
-  display: grid;
-  gap: 0.28rem;
+.course-card-updated {
+  color: var(--bonsai-muted);
+  font-size: 0.68rem;
 }
 
-.course-summary-copy strong {
-  overflow: hidden;
-  color: var(--bonsai-ink);
+.course-card-copy {
+  margin-top: 1.25rem;
+}
+
+.course-card-copy h3 {
+  margin: 0;
   font-family: "Fraunces", Georgia, serif;
-  font-size: 1.13rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transition: color 180ms ease;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
-.course-summary-copy > span,
-.course-summary-counts {
+.course-card-copy p {
+  margin: 0.45rem 0 0;
   color: var(--bonsai-muted);
   font-size: 0.72rem;
 }
 
-.course-summary-counts {
-  display: flex;
-  gap: 1.4rem;
+.course-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  color: var(--bonsai-green);
+  font-size: 0.74rem;
+  font-weight: 750;
 }
 
-.course-chevron {
-  width: 1rem;
-  height: 1rem;
-  color: var(--bonsai-muted);
+.course-card-action svg {
+  width: 0.9rem;
+  height: 0.9rem;
   transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.course-outline-item[open] .course-chevron {
-  transform: rotate(180deg);
+.course-card:hover .course-card-action svg {
+  transform: translateX(2px);
 }
 
-.saved-outline {
-  margin: 0 0 1.5rem 3.95rem;
+.course-details-page {
+  width: min(900px, calc(100% - 3rem));
+}
+
+.course-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--bonsai-muted);
+  font-size: 0.76rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.course-back-link:hover {
+  color: var(--bonsai-green);
+}
+
+.course-back-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.course-details-header {
+  margin-top: 2.3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.course-details-header h1 {
+  max-width: 19ch;
+  margin: 0;
+  color: var(--bonsai-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 3.15rem;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.course-details-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.4rem;
+  margin-top: 1.15rem;
+  color: var(--bonsai-muted);
+  font-size: 0.74rem;
+}
+
+.course-detail-outline {
+  margin-top: 1.5rem;
   border-radius: 0.85rem;
-  background: rgba(255, 255, 253, 0.76);
+  background: color-mix(in oklab, var(--surface-strong) 84%, transparent);
   padding: 0 1.4rem 0.25rem;
 }
 
@@ -1904,52 +2092,111 @@ body::after {
   font-weight: 750;
 }
 
-.saved-topic-list,
 .saved-subtopic-list ul {
   margin: 0;
   list-style: none;
   padding: 0;
 }
 
-.saved-topic-list > li {
-  padding: 1.5rem 0;
+.course-accordion-item {
   border-bottom: 1px solid var(--line);
 }
 
-.saved-topic-list > li:last-child {
+.course-accordion {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.course-accordion-item:last-child {
   border-bottom: 0;
 }
 
-.saved-topic-heading {
+.course-accordion-heading {
+  width: 100%;
+  min-height: 5rem;
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  align-items: baseline;
-  gap: 0.6rem;
+  grid-template-columns: 2rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--bonsai-ink);
+  padding: 1rem 0;
+  font: inherit;
+  text-align: left;
 }
 
-.saved-topic-heading > span {
+.course-accordion-title:hover,
+.course-accordion-trigger:hover {
+  color: var(--bonsai-green);
+}
+
+.course-accordion-title:focus-visible,
+.course-accordion-trigger:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid color-mix(in oklab, var(--lagoon) 28%, transparent);
+  outline-offset: 3px;
+}
+
+.course-accordion-number {
   color: var(--bonsai-green);
   font-family: "Fraunces", Georgia, serif;
   font-size: 0.68rem;
 }
 
-.saved-topic-heading h3 {
-  margin: 0;
-  color: var(--bonsai-ink);
+.course-accordion-title {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
   font-family: "Fraunces", Georgia, serif;
   font-size: 1.15rem;
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: -0.015em;
+  text-align: left;
+  text-wrap: pretty;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.course-accordion-counts {
+  color: var(--bonsai-muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.course-accordion-trigger {
+  color: inherit;
+  padding: 0;
+  transition: color 180ms ease;
+}
+
+.course-accordion-trigger [data-slot="accordion-trigger-icon"] {
+  width: 1rem;
+  height: 1rem;
+  color: var(--bonsai-muted);
+}
+
+.course-accordion-empty {
+  margin: 0;
+  padding: 0.25rem 0 1.5rem 2.75rem;
+  color: var(--bonsai-muted);
+  font-size: 0.76rem;
 }
 
 .saved-subtopic-list {
-  margin: 1.2rem 0 0 2.6rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.4rem 2.5rem;
+  padding: 0.25rem 0 1.5rem 2.75rem;
 }
 
+.saved-subtopic-list h3,
 .saved-subtopic-list h4 {
   margin: 0 0 0.6rem;
   color: var(--bonsai-ink);
@@ -2047,29 +2294,43 @@ body::after {
     font-size: 2.7rem;
   }
 
-  .course-outline-item summary {
-    grid-template-columns: auto minmax(0, 1fr) auto;
+  .course-details-page {
+    width: min(100% - 2rem, 900px);
   }
 
-  .course-summary-counts {
-    display: none;
+  .course-details-header h1 {
+    font-size: 2.55rem;
   }
 
-  .saved-outline {
-    margin-left: 0;
+  .course-detail-outline {
     padding-inline: 1rem;
   }
 
+  .course-accordion-heading {
+    grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+    gap: 0.55rem;
+  }
+
+  .course-accordion-counts {
+    display: none;
+  }
+
   .saved-subtopic-list {
-    margin-left: 0;
     grid-template-columns: 1fr;
+    padding-left: 2.3rem;
+  }
+
+  .course-accordion-empty {
+    padding-left: 2.3rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .course-chevron,
   .courses-create-button,
-  .course-summary-copy strong {
+  .course-card,
+  .course-card-action svg,
+  .course-accordion-title,
+  .course-accordion-trigger {
     transition: none;
   }
 }
@@ -2114,40 +2375,6 @@ body::after {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {

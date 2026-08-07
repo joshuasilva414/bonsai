@@ -11,12 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as WaitRouteImport } from './routes/wait'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as CoursesIndexRouteImport } from './routes/courses/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as CoursesCourseIdIndexRouteImport } from './routes/courses/$courseId/index'
+import { Route as SessionTextbookCurriculumNodeIdRouteImport } from './routes/session/textbook/$curriculumNodeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,11 +27,6 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoursesRoute = CoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -48,9 +44,9 @@ const WaitRoute = WaitRouteImport.update({
   path: '/wait',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
+const CoursesIndexRoute = CoursesIndexRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -58,80 +54,98 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoursesCourseIdIndexRoute = CoursesCourseIdIndexRouteImport.update({
+  id: '/courses/$courseId/',
+  path: '/courses/$courseId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionTextbookCurriculumNodeIdRoute =
+  SessionTextbookCurriculumNodeIdRouteImport.update({
+    id: '/session/textbook/$curriculumNodeId',
+    path: '/session/textbook/$curriculumNodeId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/courses': typeof CoursesRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/wait': typeof WaitRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/courses/': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/courses': typeof CoursesRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/wait': typeof WaitRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/courses': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/courses/$courseId': typeof CoursesCourseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/courses': typeof CoursesRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/wait': typeof WaitRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/courses/': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
-    | '/courses'
     | '/sign-in'
     | '/sign-up'
     | '/wait'
-    | '/demo/tanstack-query'
+    | '/courses/'
     | '/api/auth/$'
+    | '/session/textbook/$curriculumNodeId'
+    | '/courses/$courseId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/courses'
     | '/sign-in'
     | '/sign-up'
     | '/wait'
-    | '/demo/tanstack-query'
+    | '/courses'
     | '/api/auth/$'
+    | '/session/textbook/$curriculumNodeId'
+    | '/courses/$courseId'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/courses'
     | '/sign-in'
     | '/sign-up'
     | '/wait'
-    | '/demo/tanstack-query'
+    | '/courses/'
     | '/api/auth/$'
+    | '/session/textbook/$curriculumNodeId'
+    | '/courses/$courseId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CoursesRoute: typeof CoursesRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   WaitRoute: typeof WaitRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  CoursesIndexRoute: typeof CoursesIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  SessionTextbookCurriculumNodeIdRoute: typeof SessionTextbookCurriculumNodeIdRoute
+  CoursesCourseIdIndexRoute: typeof CoursesCourseIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,13 +162,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/courses': {
-      id: '/courses'
-      path: '/courses'
-      fullPath: '/courses'
-      preLoaderRoute: typeof CoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-in': {
@@ -178,11 +185,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WaitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+    '/courses/': {
+      id: '/courses/'
+      path: '/courses'
+      fullPath: '/courses/'
+      preLoaderRoute: typeof CoursesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -192,18 +199,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/courses/$courseId/': {
+      id: '/courses/$courseId/'
+      path: '/courses/$courseId'
+      fullPath: '/courses/$courseId/'
+      preLoaderRoute: typeof CoursesCourseIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session/textbook/$curriculumNodeId': {
+      id: '/session/textbook/$curriculumNodeId'
+      path: '/session/textbook/$curriculumNodeId'
+      fullPath: '/session/textbook/$curriculumNodeId'
+      preLoaderRoute: typeof SessionTextbookCurriculumNodeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CoursesRoute: CoursesRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   WaitRoute: WaitRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  CoursesIndexRoute: CoursesIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  SessionTextbookCurriculumNodeIdRoute: SessionTextbookCurriculumNodeIdRoute,
+  CoursesCourseIdIndexRoute: CoursesCourseIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -51,9 +51,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body className="font-sans antialiased [overflow-wrap:anywhere]">
-				<Header />
-				{children}
-				<Footer />
+				<div className="site-shell">
+					<Header />
+					<div className="site-content">{children}</div>
+					<Footer />
+				</div>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
