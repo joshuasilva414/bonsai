@@ -39,11 +39,120 @@ export type CurriculumTreeLevelIndex = IndexForArray<
 
 export type CurriculumNode = Subject | Topic | Subtopic | LearningObjective;
 
+export type FlatCurriculumNode = {
+	id: string;
+	parentId: string | null;
+	name: string;
+	level: CurriculumTreeLevel;
+	position: number;
+};
+
+export type CurriculumSubtreeRow = FlatCurriculumNode & {
+	curriculumId: string;
+	depth: number;
+};
+
 export function childrenOf(node: CurriculumNode): CurriculumNode[] {
 	if ("topics" in node) return node.topics;
 	if ("subtopics" in node) return node.subtopics;
 	if ("objectives" in node) return node.objectives;
 	return [];
+}
+
+export function inflateCurriculumTree(
+	rows: readonly FlatCurriculumNode[],
+	rootId: string,
+): CurriculumNode {
+	const nodesById = new Map<string, FlatCurriculumNode>();
+
+	for (const row of rows) {
+		if (nodesById.has(row.id)) {
+			throw new Error(`Curriculum node "${row.id}" appears more than once`);
+		}
+		nodesById.set(row.id, row);
+	}
+
+	const root = nodesById.get(rootId);
+	if (!root) {
+		throw new Error(`Curriculum node "${rootId}" was not found`);
+	}
+
+	for (const row of rows) {
+		const path = new Set<string>();
+		let current: FlatCurriculumNode | undefined = row;
+
+		while (current) {
+			if (path.has(current.id)) {
+				throw new Error(
+					`Curriculum subtree contains a cycle at "${current.id}"`,
+				);
+			}
+
+			path.add(current.id);
+			current = current.parentId ? nodesById.get(current.parentId) : undefined;
+		}
+	}
+
+	const childrenByParentId = new Map<string, FlatCurriculumNode[]>();
+	for (const row of rows) {
+		if (row.id === rootId) continue;
+		if (row.parentId === null || !nodesById.has(row.parentId)) {
+			throw new Error(
+				`Curriculum node "${row.id}" is not connected to root "${rootId}"`,
+			);
+		}
+
+		const children = childrenByParentId.get(row.parentId) ?? [];
+		children.push(row);
+		childrenByParentId.set(row.parentId, children);
+	}
+
+	for (const children of childrenByParentId.values()) {
+		children.sort((left, right) => left.position - right.position);
+	}
+
+	const visited = new Set<string>();
+
+	const buildNode = (row: FlatCurriculumNode): CurriculumNode => {
+		const children = childrenByParentId.get(row.id) ?? [];
+		let node: CurriculumNode;
+
+		switch (row.level) {
+			case "objective":
+				node = LearningObjective.parse({ name: row.name });
+				break;
+			case "subtopic":
+				node = SubtopicSchema.parse({
+					name: row.name,
+					objectives: children.map(buildNode),
+				});
+				break;
+			case "topic":
+				node = TopicSchema.parse({
+					name: row.name,
+					subtopics: children.map(buildNode),
+				});
+				break;
+			case "subject":
+				node = SubjectSchema.parse({
+					name: row.name,
+					topics: children.map(buildNode),
+				});
+				break;
+		}
+
+		visited.add(row.id);
+		return node;
+	};
+
+	const tree = buildNode(root);
+	if (visited.size !== rows.length) {
+		throw new Error(
+			`Curriculum subtree rooted at "${rootId}" contains unreachable nodes`,
+		);
+	}
+
+	return tree;
 }
 
 type FlatCurriculumTree = {

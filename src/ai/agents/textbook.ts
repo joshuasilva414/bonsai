@@ -1,21 +1,60 @@
-import { Agent, callable } from "agents";
+import { Agent } from "agents";
+import { type CurriculumNode, inflateCurriculumTree } from "#/lib/curriculum";
+import { loadCurriculumSubtreeRows } from "#/lib/db/queries";
 
-export type CounterState = {
-	count: number;
+export type TextbookState =
+	| {
+			status: "uninitialized";
+			nodeId: null;
+			currentObjectiveId: null;
+			curriculumSubtree: null;
+	  }
+	| {
+			status: "ready";
+			nodeId: string;
+			currentObjectiveId: string | null;
+			curriculumSubtree: CurriculumNode;
+	  };
+
+export type TextbookProps = {
+	nodeId: string;
 };
 
-export class CounterAgent extends Agent<Env, CounterState> {
-	initialState: CounterState = { count: 0 };
+export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
+	initialState: TextbookState = {
+		status: "uninitialized",
+		nodeId: null,
+		currentObjectiveId: null,
+		curriculumSubtree: null,
+	};
 
-	@callable()
-	increment() {
-		this.setState({ count: this.state.count + 1 });
-		return this.state.count;
+	async onStart(props?: TextbookProps) {
+		if (this.state.status === "ready") {
+			if (props && props.nodeId !== this.state.nodeId) {
+				throw new Error("Agent nodeId cannot be changed");
+			}
+			return;
+		}
+
+		if (!props?.nodeId) {
+			throw new Error("nodeId is required for initialization");
+		}
+
+		const curriculumSubtree = await this.loadSubtree(props.nodeId);
+
+		this.setState({
+			status: "ready",
+			nodeId: props.nodeId,
+			currentObjectiveId: null,
+			curriculumSubtree,
+		});
 	}
 
-	@callable()
-	decrement() {
-		this.setState({ count: this.state.count - 1 });
-		return this.state.count;
+	async loadSubtree(nodeId: string): Promise<CurriculumNode> {
+		const rows = await loadCurriculumSubtreeRows(this.env.DB, nodeId, {
+			scope: "all",
+		});
+
+		return inflateCurriculumTree(rows, nodeId);
 	}
 }
