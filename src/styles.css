@@ -294,6 +294,233 @@ pre code {
   color: inherit;
 }
 
+/* Textbook reading session */
+
+.textbook-page {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+  padding: clamp(2.75rem, 7vw, 6rem) 0 clamp(5rem, 10vw, 8rem);
+  display: grid;
+  grid-template-columns: minmax(11rem, 15rem) minmax(0, 44rem);
+  justify-content: center;
+  align-items: start;
+  gap: clamp(3rem, 7vw, 7rem);
+}
+
+.textbook-outline {
+  position: sticky;
+  top: 2rem;
+  min-width: 0;
+  padding-top: 0.45rem;
+}
+
+.textbook-outline h2 {
+  margin: 0 0 1rem;
+  color: var(--bonsai-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.textbook-outline ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--bonsai-border);
+}
+
+.textbook-outline li {
+  padding: 0.8rem 0;
+  display: grid;
+  gap: 0.2rem;
+  border-bottom: 1px solid var(--bonsai-border);
+  color: var(--bonsai-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.textbook-outline li:first-child {
+  color: var(--bonsai-ink);
+  font-weight: 650;
+}
+
+.textbook-outline li small {
+  color: var(--bonsai-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.textbook-outline-depth-1 {
+  padding-left: 0.75rem !important;
+}
+
+.textbook-outline-depth-2 {
+  padding-left: 1.5rem !important;
+}
+
+.textbook-outline-depth-3 {
+  padding-left: 2.25rem !important;
+}
+
+.textbook-reader {
+  min-width: 0;
+}
+
+.textbook-reader-header {
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  padding-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  border-bottom: 1px solid var(--bonsai-border);
+}
+
+.textbook-reader-header h1 {
+  max-width: 16ch;
+  margin: 0;
+  color: var(--bonsai-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.textbook-passage + .textbook-passage {
+  margin-top: clamp(3.5rem, 8vw, 6rem);
+  padding-top: clamp(3rem, 7vw, 5rem);
+  border-top: 1px solid var(--bonsai-border);
+}
+
+.textbook-prose {
+  --tw-prose-body: var(--bonsai-ink);
+  --tw-prose-headings: var(--bonsai-ink);
+  --tw-prose-lead: var(--bonsai-muted);
+  --tw-prose-links: var(--bonsai-green);
+  --tw-prose-bold: var(--bonsai-ink);
+  --tw-prose-counters: var(--bonsai-muted);
+  --tw-prose-bullets: var(--bonsai-green-bright);
+  --tw-prose-hr: var(--bonsai-border);
+  --tw-prose-quotes: var(--bonsai-ink);
+  --tw-prose-quote-borders: var(--bonsai-border);
+  --tw-prose-captions: var(--bonsai-muted);
+  --tw-prose-code: var(--bonsai-ink);
+  --tw-prose-pre-code: var(--bonsai-ink);
+  --tw-prose-pre-bg: color-mix(in oklab, var(--bonsai-paper) 82%, var(--bonsai-mist));
+  --tw-prose-th-borders: var(--bonsai-border);
+  --tw-prose-td-borders: var(--bonsai-border);
+  color: var(--bonsai-ink);
+  font-size: clamp(1.16rem, 1.2vw + 0.8rem, 1.3rem);
+  line-height: 1.82;
+}
+
+.textbook-prose :where(h1, h2, h3, h4) {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.textbook-prose :where(h1, h2) {
+  margin-top: 2.25em;
+  line-height: 1.12;
+}
+
+.textbook-prose > :first-child {
+  margin-top: 0;
+}
+
+.textbook-prose :where(p, li) {
+  text-wrap: pretty;
+}
+
+.textbook-prose :where(a) {
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.textbook-prose :where(blockquote) {
+  border-left-width: 1px;
+  font-style: normal;
+}
+
+.textbook-prose :where(pre) {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--bonsai-border);
+  border-radius: 0.85rem;
+  box-shadow: 0 10px 30px rgba(23, 58, 64, 0.06);
+}
+
+.textbook-prose :where(table) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.86em;
+}
+
+.textbook-sentinel {
+  min-height: 8rem;
+  display: grid;
+  place-items: center;
+}
+
+.textbook-sentinel-mark {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: var(--bonsai-green-bright);
+  opacity: 0.42;
+  animation: textbook-breathe 1.8s ease-in-out infinite;
+}
+
+@keyframes textbook-breathe {
+  50% {
+    opacity: 0.9;
+    transform: scale(1.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .textbook-sentinel-mark {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .textbook-page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.75rem;
+    padding-top: 2.25rem;
+  }
+
+  .textbook-outline {
+    position: static;
+  }
+
+  .textbook-outline ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+
+  .textbook-reader-header h1 {
+    font-size: clamp(2.5rem, 12vw, 3.75rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .textbook-outline ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .textbook-prose {
+    font-size: 1.125rem;
+    line-height: 1.78;
+  }
+}
+
 .page-wrap {
   width: min(1080px, calc(100% - 2rem));
   margin-inline: auto;
