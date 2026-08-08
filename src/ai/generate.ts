@@ -11,3 +11,16 @@ export async function generateCurriculumTree(prompt: string): Promise<Subject> {
 
 	return output;
 }
+
+export async function generateNextPassage(
+	prompt: string,
+	abortSignal: AbortSignal,
+) {
+	const { output } = await generateText({
+		model: TINY_MODEL,
+		prompt,
+		abortSignal,
+	});
+
+	return output;
+}

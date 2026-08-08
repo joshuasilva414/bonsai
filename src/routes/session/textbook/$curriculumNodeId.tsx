@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAgent } from "agents/react";
-import { useState } from "react";
-import type { CounterAgent, CounterState } from "#/ai/agents/textbook";
-import { Button } from "#/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import type { TextbookAgent, TextbookState } from "#/ai/agents/textbook";
 import { getCurriculumSubtree } from "#/functions/courses";
+import type { Passage } from "#/lib/passages";
+
+type TextbookAgentMessage = {
+	type: "passageReady";
+	passage: Passage;
+};
 
 export const Route = createFileRoute("/session/textbook/$curriculumNodeId")({
 	loader: ({ params: { curriculumNodeId } }) =>
@@ -13,17 +18,77 @@ export const Route = createFileRoute("/session/textbook/$curriculumNodeId")({
 
 function RouteComponent() {
 	const subtree = Route.useLoaderData();
-	const [count, setCount] = useState<number>(0);
+	const { curriculumNodeId } = Route.useParams();
 
-	const agent = useAgent<CounterAgent, CounterState>({
-		agent: "CounterAgent",
-		onStateUpdate: (state) => setCount(state.count),
+	const [passages, setPassages] = useState<Passage[]>([]);
+	const sentinelRef = useRef<HTMLDivElement>(null);
+
+	const agent = useAgent<TextbookAgent, TextbookState>({
+		agent: "TextbookAgent",
+		name: curriculumNodeId,
+		query: {
+			nodeId: curriculumNodeId,
+		},
+		onStateUpdate: (_, source) => {
+			if (source === "client") return;
+		},
+		onMessage(event) {
+			if (typeof event.data !== "string") return;
+
+			let message: unknown;
+
+			try {
+				message = JSON.parse(event.data);
+			} catch {
+				return;
+			}
+
+			if (
+				typeof message === "object" &&
+				message !== null &&
+				"type" in message &&
+				message.type === "passageReady"
+			) {
+				const { passage } = message as TextbookAgentMessage;
+
+				setPassages((current) => {
+					return [...current, passage];
+				});
+			}
+		},
 	});
+
+	useEffect(() => {
+		const sentinel = sentinelRef.current;
+
+		if (
+			!sentinel ||
+			agent.state?.status !== "ready" ||
+			agent.state.generation.status !== "idle"
+		) {
+			return;
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (!entry?.isIntersecting) return;
+
+				void agent.stub.requestReadAhead();
+			},
+			{
+				threshold: 0,
+				rootMargin: "0px 0px 50% 0px",
+			},
+		);
+
+		observer.observe(sentinel);
+		return () => observer.disconnect();
+	}, [agent, agent.state]);
 
 	return (
 		<main>
 			<h1>Curriculum subtree</h1>
-			<section>
+			<section aria-label="Textbook Outline">
 				<pre>
 					{subtree
 						.map(
@@ -34,10 +99,12 @@ function RouteComponent() {
 				</pre>
 			</section>
 
-			<section>
-				{count}
-				<Button onClick={() => agent.stub.increment()}>+</Button>
-				<Button onClick={() => agent.stub.decrement()}>-</Button>
+			<section aria-label="Textbook Content">
+				{passages.map((passage) => (
+					<article key="">{passage.content}</article>
+				))}
+
+				<div ref={sentinelRef} aria-hidden="true" />
 			</section>
 		</main>
 	);

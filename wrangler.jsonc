@@ -7,8 +7,8 @@
   "compatibility_flags": ["nodejs_compat_v2"],
   "durable_objects": {
     "bindings": [{
-      "name": "CounterAgent",
-      "class_name": "CounterAgent"
+      "name": "TextbookAgent",
+      "class_name": "TextbookAgent"
     }]
   },
   "d1_databases": [{
@@ -33,7 +33,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["CounterAgent"]
+      "new_sqlite_classes": ["TextbookAgent"]
     }
   ]
 }
