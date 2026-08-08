@@ -8,6 +8,9 @@
 	"files.readonlyInclude": {
 		"**/routeTree.gen.ts": true
 	},
+	"files.associations": {
+		"tsconfig.json": "jsonc"
+	},
 	"[javascript]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
