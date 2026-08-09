@@ -2,18 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useAgent } from "agents/react";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import type { TextbookAgent, TextbookState } from "#/ai/agents/textbook";
 import { getCurriculumSubtree } from "#/functions/courses";
+import { normalizeMathDelimiters } from "#/lib/markdown";
 import type { Passage } from "#/lib/passages";
 
 type TextbookAgentMessage = {
 	type: "passageReady";
 	passage: Passage;
-};
-
-type RenderedPassage = Passage & {
-	key: string;
 };
 
 export const Route = createFileRoute("/session/textbook/$curriculumNodeId")({
@@ -27,7 +26,7 @@ function RouteComponent() {
 	const { curriculumNodeId } = Route.useParams();
 	const sectionTitle = subtree[0]?.name ?? "Textbook session";
 
-	const [passages, setPassages] = useState<RenderedPassage[]>([]);
+	const [passages, setPassages] = useState<Passage[]>([]);
 	const sentinelRef = useRef<HTMLDivElement>(null);
 
 	const agent = useAgent<TextbookAgent, TextbookState>({
@@ -58,9 +57,7 @@ function RouteComponent() {
 			) {
 				const { passage } = message as TextbookAgentMessage;
 
-				setPassages((current) => {
-					return [...current, { ...passage, key: crypto.randomUUID() }];
-				});
+				setPassages((current) => [...current, passage]);
 			}
 		},
 	});
@@ -84,7 +81,7 @@ function RouteComponent() {
 			},
 			{
 				threshold: 0,
-				rootMargin: "0px 0px 50% 0px",
+				rootMargin: "0px 0px 120% 0px",
 			},
 		);
 
@@ -122,15 +119,20 @@ function RouteComponent() {
 				</header>
 
 				<section className="textbook-content" aria-label="Textbook content">
-					{passages.map((passage) => (
-						<article className="textbook-passage" key={passage.key}>
+					{passages.length > 0 ? (
+						<article className="textbook-passage">
 							<div className="textbook-prose prose prose-xl max-w-none">
-								<Markdown remarkPlugins={[remarkGfm]}>
-									{passage.content}
+								<Markdown
+									rehypePlugins={[rehypeKatex]}
+									remarkPlugins={[remarkGfm, remarkMath]}
+								>
+									{normalizeMathDelimiters(
+										passages.map((passage) => passage.content).join("\n\n"),
+									)}
 								</Markdown>
 							</div>
 						</article>
-					))}
+					) : null}
 
 					<div ref={sentinelRef} className="textbook-sentinel">
 						<span className="textbook-sentinel-mark" aria-hidden="true" />

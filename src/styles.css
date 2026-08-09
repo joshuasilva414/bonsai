@@ -1,5 +1,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import "katex/dist/katex.min.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -386,12 +387,6 @@ pre code {
   text-wrap: balance;
 }
 
-.textbook-passage + .textbook-passage {
-  margin-top: clamp(3.5rem, 8vw, 6rem);
-  padding-top: clamp(3rem, 7vw, 5rem);
-  border-top: 1px solid var(--bonsai-border);
-}
-
 .textbook-prose {
   --tw-prose-body: var(--bonsai-ink);
   --tw-prose-headings: var(--bonsai-ink);
@@ -458,6 +453,18 @@ pre code {
   max-width: 100%;
   overflow-x: auto;
   font-size: 0.86em;
+}
+
+.textbook-prose :where(.katex) {
+  font-size: 1.04em;
+}
+
+.textbook-prose :where(.katex-display) {
+  max-width: 100%;
+  margin-block: 1.75em;
+  padding-block: 0.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .textbook-sentinel {

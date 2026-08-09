@@ -1,14 +1,14 @@
-import {
-	Agent,
-	callable,
-	type FiberRecoveryContext,
-	type FiberRecoveryResult,
-} from "agents";
+import { Agent, callable, type FiberRecoveryContext } from "agents";
 import { nanoid } from "nanoid";
 import { type CurriculumNode, inflateCurriculumTree } from "#/lib/curriculum";
 import { loadCurriculumSubtreeRows } from "#/lib/db/queries";
-import type { Passage } from "#/lib/passages";
+import {
+	type Passage,
+	type PassageContinuation,
+	passageClosingExcerpt,
+} from "#/lib/passages";
 import { generateNextPassage } from "../generate";
+import { nextPassagePrompt } from "../prompts/next-passage";
 
 type PassageReadyMessage = {
 	type: "passageReady";
@@ -27,6 +27,8 @@ export type TextbookState =
 			nodeId: string;
 			currentObjectiveId: string | null;
 			curriculumSubtree: CurriculumNode;
+			passageCount?: number;
+			continuation?: PassageContinuation | null;
 			generation:
 				| { status: "idle" }
 				| { status: "queued" | "running"; requestId: string }
@@ -109,15 +111,28 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 				});
 
 				try {
-					const text = await generateNextPassage(
+					const generatedPassage = await generateNextPassage(
 						this.buildNextPassagePrompt(),
 						ctx.signal,
 					);
 					if (ctx.signal.aborted) return;
 
 					const passage: Passage = {
-						content: text,
+						content: generatedPassage.content,
 					};
+					const passageCount = (this.state.passageCount ?? 0) + 1;
+					const continuation: PassageContinuation = {
+						...generatedPassage.continuation,
+						passageNumber: passageCount,
+						closingExcerpt: passageClosingExcerpt(generatedPassage.content),
+					};
+
+					this.setState({
+						...this.state,
+						passageCount,
+						continuation,
+						generation: { status: "idle" },
+					});
 
 					this.broadcast(
 						JSON.stringify({
@@ -125,13 +140,6 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 							passage,
 						} satisfies PassageReadyMessage),
 					);
-
-					if (this.state.status === "ready") {
-						this.setState({
-							...this.state,
-							generation: { status: "idle" },
-						});
-					}
 				} catch (error) {
 					if (this.state.status === "ready") {
 						this.setState({
@@ -183,7 +191,16 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 	}
 
 	private buildNextPassagePrompt(): string {
-		return `Generate the next textbook passage for: ${JSON.stringify(this.state.curriculumSubtree)}`;
+		if (this.state.status !== "ready") {
+			throw new Error(
+				"Textbook must be ready before building a passage prompt",
+			);
+		}
+
+		return nextPassagePrompt({
+			curriculumSubtree: this.state.curriculumSubtree,
+			previousPassage: this.state.continuation ?? null,
+		});
 	}
 
 	async loadSubtree(nodeId: string): Promise<CurriculumNode> {

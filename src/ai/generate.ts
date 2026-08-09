@@ -1,5 +1,6 @@
 import { generateText, Output } from "ai";
 import { type Subject, SubjectSchema } from "#/lib/curriculum";
+import { GeneratedPassageSchema } from "#/lib/passages";
 import { TINY_MODEL } from "@/ai/models";
 
 export async function generateCurriculumTree(prompt: string): Promise<Subject> {
@@ -18,6 +19,7 @@ export async function generateNextPassage(
 ) {
 	const { output } = await generateText({
 		model: TINY_MODEL,
+		output: Output.object({ schema: GeneratedPassageSchema }),
 		prompt,
 		abortSignal,
 	});
