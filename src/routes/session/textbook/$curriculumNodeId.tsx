@@ -1,19 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAgent } from "agents/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import type { TextbookAgent, TextbookState } from "#/ai/agents/textbook";
+import { Button } from "#/components/ui/button";
 import { getCurriculumSubtree } from "#/functions/courses";
 import { normalizeMathDelimiters } from "#/lib/markdown";
+import {
+	isTextbookAgentMessage,
+	type PassageProgressMessage,
+} from "#/lib/passage-stream";
 import type { Passage } from "#/lib/passages";
 
-type TextbookAgentMessage = {
-	type: "passageReady";
-	passage: Passage;
-};
+const markdownRehypePlugins = [rehypeKatex];
+const markdownRemarkPlugins = [remarkGfm, remarkMath];
 
 export const Route = createFileRoute("/session/textbook/$curriculumNodeId")({
 	loader: ({ params: { curriculumNodeId } }) =>
@@ -27,7 +30,51 @@ function RouteComponent() {
 	const sectionTitle = subtree[0]?.name ?? "Textbook session";
 
 	const [passages, setPassages] = useState<Passage[]>([]);
+	const [streamingPassage, setStreamingPassage] = useState<{
+		requestId: string;
+		content: string;
+	} | null>(null);
 	const sentinelRef = useRef<HTMLDivElement>(null);
+	const pendingProgressRef = useRef<PassageProgressMessage | null>(null);
+	const progressFrameRef = useRef<number | null>(null);
+
+	const cancelPendingProgress = useCallback(() => {
+		if (progressFrameRef.current !== null) {
+			cancelAnimationFrame(progressFrameRef.current);
+		}
+
+		progressFrameRef.current = null;
+		pendingProgressRef.current = null;
+	}, []);
+
+	const queueProgress = useCallback((progress: PassageProgressMessage) => {
+		const pending = pendingProgressRef.current;
+		pendingProgressRef.current =
+			pending?.requestId === progress.requestId &&
+			progress.operation === "append"
+				? { ...pending, content: pending.content + progress.content }
+				: progress;
+		if (progressFrameRef.current !== null) return;
+
+		progressFrameRef.current = requestAnimationFrame(() => {
+			const progress = pendingProgressRef.current;
+			progressFrameRef.current = null;
+			pendingProgressRef.current = null;
+			if (!progress) return;
+
+			setStreamingPassage((current) => {
+				if (current?.requestId !== progress.requestId) return current;
+
+				return {
+					requestId: progress.requestId,
+					content:
+						progress.operation === "replace"
+							? progress.content
+							: current.content + progress.content,
+				};
+			});
+		});
+	}, []);
 
 	const agent = useAgent<TextbookAgent, TextbookState>({
 		agent: "TextbookAgent",
@@ -49,18 +96,31 @@ function RouteComponent() {
 				return;
 			}
 
-			if (
-				typeof message === "object" &&
-				message !== null &&
-				"type" in message &&
-				message.type === "passageReady"
-			) {
-				const { passage } = message as TextbookAgentMessage;
+			if (!isTextbookAgentMessage(message)) return;
 
-				setPassages((current) => [...current, passage]);
+			switch (message.type) {
+				case "passageStart":
+					cancelPendingProgress();
+					setStreamingPassage({ requestId: message.requestId, content: "" });
+					break;
+				case "passageProgress":
+					queueProgress(message);
+					break;
+				case "passageReady":
+					cancelPendingProgress();
+					setPassages((current) => [...current, message.passage]);
+					setStreamingPassage((current) =>
+						current?.requestId === message.requestId ? null : current,
+					);
+					break;
+				case "passageFailed":
+					cancelPendingProgress();
+					break;
 			}
 		},
 	});
+
+	useEffect(() => cancelPendingProgress, [cancelPendingProgress]);
 
 	useEffect(() => {
 		const sentinel = sentinelRef.current;
@@ -89,12 +149,22 @@ function RouteComponent() {
 		return () => observer.disconnect();
 	}, [agent, agent.state]);
 
-	const passageStatus =
-		agent.state?.status !== "ready"
+	const isGenerating =
+		agent.state?.status === "ready" &&
+		(agent.state.generation.status === "queued" ||
+			agent.state.generation.status === "running");
+	const passageStatus = isGenerating
+		? "Writing the next passage…"
+		: agent.state?.status !== "ready"
 			? "Connecting to your textbook…"
 			: passages.length === 0
 				? "Preparing your first passage…"
 				: "Preparing the next passage…";
+	const generationError =
+		agent.state?.status === "ready" &&
+		agent.state.generation.status === "failed"
+			? agent.state.generation.message
+			: null;
 
 	return (
 		<main className="textbook-page">
@@ -119,19 +189,43 @@ function RouteComponent() {
 				</header>
 
 				<section className="textbook-content" aria-label="Textbook content">
-					{passages.length > 0 ? (
-						<article className="textbook-passage">
+					{passages.length > 0 || streamingPassage !== null ? (
+						<article aria-busy={isGenerating} className="textbook-passage">
 							<div className="textbook-prose prose prose-xl max-w-none">
-								<Markdown
-									rehypePlugins={[rehypeKatex]}
-									remarkPlugins={[remarkGfm, remarkMath]}
-								>
-									{normalizeMathDelimiters(
-										passages.map((passage) => passage.content).join("\n\n"),
-									)}
-								</Markdown>
+								{passages.length > 0 ? (
+									<Markdown
+										rehypePlugins={markdownRehypePlugins}
+										remarkPlugins={markdownRemarkPlugins}
+									>
+										{normalizeMathDelimiters(
+											passages.map((passage) => passage.content).join("\n\n"),
+										)}
+									</Markdown>
+								) : null}
+								{streamingPassage?.content ? (
+									<Markdown
+										rehypePlugins={markdownRehypePlugins}
+										remarkPlugins={markdownRemarkPlugins}
+									>
+										{normalizeMathDelimiters(streamingPassage.content)}
+									</Markdown>
+								) : null}
 							</div>
 						</article>
+					) : null}
+
+					{generationError ? (
+						<div className="textbook-generation-error" role="alert">
+							<p>{generationError}</p>
+							<Button
+								onClick={() => void agent.stub.requestReadAhead()}
+								size="sm"
+								type="button"
+								variant="outline"
+							>
+								Try again
+							</Button>
+						</div>
 					) : null}
 
 					<div ref={sentinelRef} className="textbook-sentinel">

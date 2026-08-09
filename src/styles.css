@@ -473,6 +473,20 @@ pre code {
   place-items: center;
 }
 
+.textbook-generation-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  color: var(--bonsai-muted);
+  font-size: 0.9rem;
+}
+
+.textbook-generation-error p {
+  margin: 0;
+}
+
 .textbook-sentinel-mark {
   width: 0.38rem;
   height: 0.38rem;

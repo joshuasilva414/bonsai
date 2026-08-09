@@ -2,6 +2,7 @@ import { Agent, callable, type FiberRecoveryContext } from "agents";
 import { nanoid } from "nanoid";
 import { type CurriculumNode, inflateCurriculumTree } from "#/lib/curriculum";
 import { loadCurriculumSubtreeRows } from "#/lib/db/queries";
+import type { TextbookAgentMessage } from "#/lib/passage-stream";
 import {
 	type Passage,
 	type PassageContinuation,
@@ -9,11 +10,6 @@ import {
 } from "#/lib/passages";
 import { generateNextPassage } from "../generate";
 import { nextPassagePrompt } from "../prompts/next-passage";
-
-type PassageReadyMessage = {
-	type: "passageReady";
-	passage: Passage;
-};
 
 export type TextbookState =
 	| {
@@ -82,7 +78,8 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 	async requestReadAhead() {
 		if (
 			this.state.status !== "ready" ||
-			this.state.generation.status !== "idle"
+			(this.state.generation.status !== "idle" &&
+				this.state.generation.status !== "failed")
 		) {
 			return { accepted: false };
 		}
@@ -111,9 +108,23 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 				});
 
 				try {
+					this.broadcastTextbookMessage({
+						type: "passageStart",
+						requestId,
+					});
+
 					const generatedPassage = await generateNextPassage(
 						this.buildNextPassagePrompt(),
 						ctx.signal,
+						(update) => {
+							if (ctx.signal.aborted) return;
+
+							this.broadcastTextbookMessage({
+								type: "passageProgress",
+								requestId,
+								...update,
+							});
+						},
 					);
 					if (ctx.signal.aborted) return;
 
@@ -134,13 +145,17 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 						generation: { status: "idle" },
 					});
 
-					this.broadcast(
-						JSON.stringify({
-							type: "passageReady",
-							passage,
-						} satisfies PassageReadyMessage),
-					);
+					this.broadcastTextbookMessage({
+						type: "passageReady",
+						requestId,
+						passage,
+					});
 				} catch (error) {
+					this.broadcastTextbookMessage({
+						type: "passageFailed",
+						requestId,
+					});
+
 					if (this.state.status === "ready") {
 						this.setState({
 							...this.state,
@@ -175,6 +190,16 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 		if (ctx.name !== "generate-next-passage") return;
 
 		if (this.state.status === "ready") {
+			if (
+				this.state.generation.status === "queued" ||
+				this.state.generation.status === "running"
+			) {
+				this.broadcastTextbookMessage({
+					type: "passageFailed",
+					requestId: this.state.generation.requestId,
+				});
+			}
+
 			this.setState({
 				...this.state,
 				generation: {
@@ -201,6 +226,10 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 			curriculumSubtree: this.state.curriculumSubtree,
 			previousPassage: this.state.continuation ?? null,
 		});
+	}
+
+	private broadcastTextbookMessage(message: TextbookAgentMessage) {
+		this.broadcast(JSON.stringify(message));
 	}
 
 	async loadSubtree(nodeId: string): Promise<CurriculumNode> {
