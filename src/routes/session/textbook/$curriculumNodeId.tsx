@@ -141,7 +141,7 @@ function RouteComponent() {
 			},
 			{
 				threshold: 0,
-				rootMargin: "0px 0px 120% 0px",
+				rootMargin: "0px 0px 200% 0px",
 			},
 		);
 

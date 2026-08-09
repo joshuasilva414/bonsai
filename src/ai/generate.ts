@@ -27,6 +27,7 @@ export async function generateNextPassage(
 		output: Output.object({ schema: GeneratedPassageSchema }),
 		prompt,
 		abortSignal,
+		reasoning: "none",
 	});
 
 	let lastContent = "";
