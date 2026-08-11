@@ -47,7 +47,6 @@ export default function Header() {
 								<span className="profile-avatar" aria-hidden="true">
 									{initials ?? <UserRound />}
 								</span>
-								<span className="profile-label">Profile</span>
 							</summary>
 							<div className="profile-popover">
 								<strong>{session.user.name}</strong>
@@ -70,7 +69,6 @@ export default function Header() {
 							<span className="profile-avatar" aria-hidden="true">
 								<UserRound />
 							</span>
-							<span className="profile-label">Profile</span>
 						</Link>
 					)}
 					<a className="nav-cta" href="/#learning-description">

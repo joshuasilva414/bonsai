@@ -6,6 +6,7 @@ export interface CurriculumGraphNode {
 	parentId: string | null;
 	name: string;
 	level: CurriculumTreeLevel;
+	siblingOrder: number;
 	childCount: number;
 }
 
@@ -20,34 +21,38 @@ export function courseOutlineToGraphNodes(
 			parentId: null,
 			name: course.title,
 			level: "subject",
+			siblingOrder: 1,
 			childCount: course.topics.length,
 		});
 	}
 
-	for (const topic of course.topics) {
+	for (const [topicIndex, topic] of course.topics.entries()) {
 		nodes.push({
 			id: topic.id,
 			parentId: course.rootId,
 			name: topic.name,
 			level: "topic",
+			siblingOrder: topicIndex + 1,
 			childCount: topic.subtopics.length,
 		});
 
-		for (const subtopic of topic.subtopics) {
+		for (const [subtopicIndex, subtopic] of topic.subtopics.entries()) {
 			nodes.push({
 				id: subtopic.id,
 				parentId: topic.id,
 				name: subtopic.name,
 				level: "subtopic",
+				siblingOrder: subtopicIndex + 1,
 				childCount: subtopic.objectives.length,
 			});
 
-			for (const objective of subtopic.objectives) {
+			for (const [objectiveIndex, objective] of subtopic.objectives.entries()) {
 				nodes.push({
 					id: objective.id,
 					parentId: subtopic.id,
 					name: objective.name,
 					level: "objective",
+					siblingOrder: objectiveIndex + 1,
 					childCount: 0,
 				});
 			}

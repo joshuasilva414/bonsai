@@ -41,25 +41,36 @@
 }
 
 .curriculum-map-workspace {
-	height: min(72vh, 760px);
+	height: min(76vh, 800px);
 	min-height: 560px;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) 280px;
-	overflow: hidden;
-	border: 1px solid var(--line);
-	border-radius: 0.9rem;
-	background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
-	box-shadow: 0 22px 60px color-mix(in oklab, var(--sea-ink) 10%, transparent);
+	grid-template-rows: minmax(0, 1fr) auto;
 }
 
 .curriculum-map-canvas {
 	position: relative;
 	min-width: 0;
-	background: color-mix(in oklab, var(--bonsai-paper) 94%, var(--bonsai-mist));
+	background: transparent;
+}
+
+.curriculum-map-canvas .react-flow {
+	--xy-background-color: transparent;
+	--xy-background-color-default: transparent;
+	--xy-controls-button-background-color-default: var(--surface-strong);
+	--xy-controls-button-background-color-hover-default: var(--bonsai-mist);
+	--xy-controls-button-color-default: var(--bonsai-ink);
+	--xy-controls-button-border-color-default: var(--line);
+	--xy-minimap-background-color-default: var(--surface-strong);
+	--xy-attribution-background-color-default: transparent;
+	background: transparent;
+}
+
+.curriculum-map-canvas .react-flow__background {
+	background: transparent;
 }
 
 .curriculum-map-canvas .react-flow__background pattern circle {
-	fill: var(--bonsai-page-dot);
+	fill: color-mix(in oklab, var(--bonsai-page-dot) 52%, transparent);
 }
 
 .curriculum-map-canvas .react-flow__edge-path {
@@ -83,7 +94,6 @@
 }
 
 .curriculum-map-node {
-	--node-accent: var(--bonsai-green);
 	position: relative;
 	height: 88px;
 	display: flex;
@@ -98,34 +108,13 @@
 	box-shadow: 0 10px 28px color-mix(in oklab, var(--sea-ink) 11%, transparent);
 }
 
-.curriculum-map-node[data-level="topic"] {
-	--node-accent: var(--lagoon-deep);
-}
-
-.curriculum-map-node[data-level="subtopic"] {
-	--node-accent: color-mix(in oklab, var(--lagoon) 65%, var(--bonsai-green));
-}
-
-.curriculum-map-node[data-level="objective"] {
-	--node-accent: var(--bonsai-muted);
-}
-
-.curriculum-map-node-level {
-	display: flex;
-	align-items: center;
-	gap: 0.35rem;
+.curriculum-map-node-order {
 	color: var(--bonsai-green-bright);
-	font-size: 0.62rem;
-	font-weight: 800;
-}
-
-.curriculum-map-node-level::before {
-	width: 0.4rem;
-	height: 0.4rem;
-	flex: none;
-	border-radius: 50%;
-	background: var(--node-accent);
-	content: "";
+	margin-inline-end: 0.35rem;
+	font-size: inherit;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
 }
 
 .curriculum-map-node strong {
@@ -179,17 +168,28 @@
 }
 
 .curriculum-map-node .react-flow__handle {
-	width: 6px;
-	height: 18px;
+	width: 1px;
+	height: 1px;
 	border: 0;
-	border-radius: 3px;
-	background: var(--bonsai-green);
+	background: transparent;
 }
 
 .curriculum-map-inspector {
-	border-left: 1px solid var(--line);
-	background: color-mix(in oklab, var(--surface-strong) 92%, transparent);
-	padding: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	border-top: 1px solid var(--line);
+	background: transparent;
+	padding: 1.15rem 0;
+}
+
+.curriculum-map-inspector-copy {
+	min-width: 0;
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: baseline;
+	gap: 0.35rem 0.8rem;
 }
 
 .curriculum-map-inspector-level {
@@ -199,7 +199,7 @@
 }
 
 .curriculum-map-inspector h2 {
-	margin: 0.75rem 0 0;
+	margin: 0;
 	color: var(--bonsai-ink);
 	font-family: "Fraunces", Georgia, serif;
 	font-size: 1.35rem;
@@ -210,7 +210,8 @@
 }
 
 .curriculum-map-inspector p {
-	margin: 0.8rem 0 0;
+	grid-column: 2;
+	margin: 0;
 	color: var(--bonsai-muted);
 	font-size: 0.78rem;
 	line-height: 1.6;
@@ -220,7 +221,8 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
-	margin-top: 1.4rem;
+	flex: none;
+	margin: 0;
 	color: var(--bonsai-green);
 	font-size: 0.76rem;
 	font-weight: 800;
@@ -310,20 +312,26 @@
 	}
 
 	.curriculum-map-workspace {
-		height: auto;
-		min-height: 0;
-		grid-template-columns: 1fr;
+		height: min(76vh, 720px);
+		min-height: 540px;
 	}
 
 	.curriculum-map-canvas {
-		height: 62vh;
-		min-height: 480px;
+		min-height: 0;
 	}
 
 	.curriculum-map-inspector {
-		min-height: 10rem;
-		border-top: 1px solid var(--line);
-		border-left: 0;
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.9rem;
+	}
+
+	.curriculum-map-inspector-copy {
+		grid-template-columns: 1fr;
+	}
+
+	.curriculum-map-inspector p {
+		grid-column: 1;
 	}
 }
 

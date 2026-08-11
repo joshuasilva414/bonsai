@@ -7,6 +7,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "#/components/ui/accordion";
+import { Button } from "#/components/ui/button";
 import { getCourseOutline } from "#/functions/courses";
 
 export const Route = createFileRoute("/courses/$courseId/")({
@@ -52,15 +53,22 @@ function CourseDetailsPage() {
 					<span>{course.objectiveCount} objectives</span>
 				</div>
 			</header>
-			<Link
-				className="courses-create-button"
+			<div className="my-4 flex gap-2">
+				<Link to="/session/textbook">
+					<Button className="bg-bonsai-action hover:bg-bonsai-action-hover cursor-pointer">
+						New Session
+					</Button>
+				</Link><Link
 				to="/courses/$courseId/graph"
 				params={{ courseId: course.id }}
 			>
-				<Network aria-hidden="true" />
-				Graph view
+				<Button className="bg-bonsai-action hover:bg-bonsai-action-hover cursor-pointer">
+					<Network aria-hidden="true" />
+					Graph view
+				</Button>
 			</Link>
-
+			</div>
+			
 			<section className="course-detail-outline" aria-label="Course outline">
 				<h2 className="sr-only">Course outline</h2>
 				<div className="saved-outline-meta">

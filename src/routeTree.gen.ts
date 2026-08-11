@@ -18,6 +18,7 @@ import { Route as CoursesIndexRouteImport } from './routes/courses/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as CoursesCourseIdIndexRouteImport } from './routes/courses/$courseId/index'
 import { Route as CoursesCourseIdGraphRouteImport } from './routes/courses/$courseId/graph'
+import { Route as SessionTextbookIndexRouteImport } from './routes/session/textbook/index'
 import { Route as SessionTextbookCurriculumNodeIdRouteImport } from './routes/session/textbook/$curriculumNodeId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +66,11 @@ const CoursesCourseIdGraphRoute = CoursesCourseIdGraphRouteImport.update({
   path: '/courses/$courseId/graph',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SessionTextbookIndexRoute = SessionTextbookIndexRouteImport.update({
+  id: '/session/textbook/',
+  path: '/session/textbook/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionTextbookCurriculumNodeIdRoute =
   SessionTextbookCurriculumNodeIdRouteImport.update({
     id: '/session/textbook/$curriculumNodeId',
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
+  '/session/textbook/': typeof SessionTextbookIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId': typeof CoursesCourseIdIndexRoute
+  '/session/textbook': typeof SessionTextbookIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
+  '/session/textbook/': typeof SessionTextbookIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
+    | '/session/textbook/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId'
+    | '/session/textbook'
   id:
     | '__root__'
     | '/'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
+    | '/session/textbook/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -159,6 +171,7 @@ export interface RootRouteChildren {
   CoursesCourseIdGraphRoute: typeof CoursesCourseIdGraphRoute
   SessionTextbookCurriculumNodeIdRoute: typeof SessionTextbookCurriculumNodeIdRoute
   CoursesCourseIdIndexRoute: typeof CoursesCourseIdIndexRoute
+  SessionTextbookIndexRoute: typeof SessionTextbookIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -226,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesCourseIdGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/textbook/': {
+      id: '/session/textbook/'
+      path: '/session/textbook'
+      fullPath: '/session/textbook/'
+      preLoaderRoute: typeof SessionTextbookIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/session/textbook/$curriculumNodeId': {
       id: '/session/textbook/$curriculumNodeId'
       path: '/session/textbook/$curriculumNodeId'
@@ -247,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoursesCourseIdGraphRoute: CoursesCourseIdGraphRoute,
   SessionTextbookCurriculumNodeIdRoute: SessionTextbookCurriculumNodeIdRoute,
   CoursesCourseIdIndexRoute: CoursesCourseIdIndexRoute,
+  SessionTextbookIndexRoute: SessionTextbookIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

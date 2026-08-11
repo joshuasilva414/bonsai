@@ -33,30 +33,40 @@ test("flattens a course outline into canonical graph nodes", () => {
 	const nodes = courseOutlineToGraphNodes(course);
 
 	assert.deepEqual(
-		nodes.map(({ id, parentId, level, childCount }) => ({
+		nodes.map(({ id, parentId, level, siblingOrder, childCount }) => ({
 			id,
 			parentId,
 			level,
+			siblingOrder,
 			childCount,
 		})),
 		[
-			{ id: "subject-1", parentId: null, level: "subject", childCount: 1 },
+			{
+				id: "subject-1",
+				parentId: null,
+				level: "subject",
+				siblingOrder: 1,
+				childCount: 1,
+			},
 			{
 				id: "topic-1",
 				parentId: "subject-1",
 				level: "topic",
+				siblingOrder: 1,
 				childCount: 1,
 			},
 			{
 				id: "subtopic-1",
 				parentId: "topic-1",
 				level: "subtopic",
+				siblingOrder: 1,
 				childCount: 1,
 			},
 			{
 				id: "objective-1",
 				parentId: "subtopic-1",
 				level: "objective",
+				siblingOrder: 1,
 				childCount: 0,
 			},
 		],
