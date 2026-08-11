@@ -17,6 +17,7 @@ import { Route as WaitRouteImport } from './routes/wait'
 import { Route as CoursesIndexRouteImport } from './routes/courses/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as CoursesCourseIdIndexRouteImport } from './routes/courses/$courseId/index'
+import { Route as CoursesCourseIdGraphRouteImport } from './routes/courses/$courseId/graph'
 import { Route as SessionTextbookCurriculumNodeIdRouteImport } from './routes/session/textbook/$curriculumNodeId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +60,11 @@ const CoursesCourseIdIndexRoute = CoursesCourseIdIndexRouteImport.update({
   path: '/courses/$courseId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoursesCourseIdGraphRoute = CoursesCourseIdGraphRouteImport.update({
+  id: '/courses/$courseId/graph',
+  path: '/courses/$courseId/graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionTextbookCurriculumNodeIdRoute =
   SessionTextbookCurriculumNodeIdRouteImport.update({
     id: '/session/textbook/$curriculumNodeId',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/wait': typeof WaitRoute
   '/courses/': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
 }
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/wait': typeof WaitRoute
   '/courses': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId': typeof CoursesCourseIdIndexRoute
 }
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/wait': typeof WaitRoute
   '/courses/': typeof CoursesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
 }
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/wait'
     | '/courses/'
     | '/api/auth/$'
+    | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
   fileRoutesByTo: FileRoutesByTo
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/wait'
     | '/courses'
     | '/api/auth/$'
+    | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId'
   id:
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/wait'
     | '/courses/'
     | '/api/auth/$'
+    | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
   fileRoutesById: FileRoutesById
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   WaitRoute: typeof WaitRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  CoursesCourseIdGraphRoute: typeof CoursesCourseIdGraphRoute
   SessionTextbookCurriculumNodeIdRoute: typeof SessionTextbookCurriculumNodeIdRoute
   CoursesCourseIdIndexRoute: typeof CoursesCourseIdIndexRoute
 }
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesCourseIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/courses/$courseId/graph': {
+      id: '/courses/$courseId/graph'
+      path: '/courses/$courseId/graph'
+      fullPath: '/courses/$courseId/graph'
+      preLoaderRoute: typeof CoursesCourseIdGraphRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/session/textbook/$curriculumNodeId': {
       id: '/session/textbook/$curriculumNodeId'
       path: '/session/textbook/$curriculumNodeId'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   WaitRoute: WaitRoute,
   CoursesIndexRoute: CoursesIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  CoursesCourseIdGraphRoute: CoursesCourseIdGraphRoute,
   SessionTextbookCurriculumNodeIdRoute: SessionTextbookCurriculumNodeIdRoute,
   CoursesCourseIdIndexRoute: CoursesCourseIdIndexRoute,
 }

@@ -15,6 +15,7 @@ import { curriculum, curriculumNode } from "#/lib/db/schema";
 
 export interface CourseOutline {
 	id: string;
+	rootId: string | null;
 	title: string;
 	createdAt: string;
 	updatedAt: string;
@@ -102,6 +103,7 @@ async function loadCourseOutlines(userId: string, courseId?: string) {
 
 		return {
 			id: first.curriculumId,
+			rootId: root?.nodeId ?? null,
 			title: root?.name ?? "Untitled course",
 			createdAt: first.createdAt.toISOString(),
 			updatedAt: first.updatedAt.toISOString(),

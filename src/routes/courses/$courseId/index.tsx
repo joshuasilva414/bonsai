@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Network } from "lucide-react";
 import SessionDialog from "#/components/SessionDialog";
 import {
 	Accordion,
@@ -52,6 +52,14 @@ function CourseDetailsPage() {
 					<span>{course.objectiveCount} objectives</span>
 				</div>
 			</header>
+			<Link
+				className="courses-create-button"
+				to="/courses/$courseId/graph"
+				params={{ courseId: course.id }}
+			>
+				<Network aria-hidden="true" />
+				Graph view
+			</Link>
 
 			<section className="course-detail-outline" aria-label="Course outline">
 				<h2 className="sr-only">Course outline</h2>
