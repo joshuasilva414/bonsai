@@ -2,7 +2,7 @@ import handler from "@tanstack/react-start/server-entry";
 import { routeAgentRequest } from "agents";
 
 export { TextbookAgent } from "./ai/agents/textbook";
-export { CreateCourseWorkflow } from "./workflows/bonsai";
+export { CreateCourseWorkflow, PrepareSessionWorkflow, GenerateArtifactWorkflow } from "./workflows/bonsai";
 
 export default {
 	async fetch(request: Request, env: Env) {

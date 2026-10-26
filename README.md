@@ -6,8 +6,21 @@ To run this application:
 
 ```bash
 pnpm install
+pnpm db:migrate:local
 pnpm dev
 ```
+
+## Database migrations
+
+The dev server uses local D1 storage in `.wrangler/state`. Apply pending migrations
+with `pnpm db:migrate:local` before starting the server. After changing a Drizzle
+schema, run `pnpm db:generate --name <migration-name>`, review the SQL in `drizzle/`,
+and apply it locally. Include the generated SQL and snapshot in version control.
+
+`pnpm db:push` uses the remote Cloudflare database configured in `.env`. It does
+not update the database used by `pnpm dev`.
+
+Run the database migration and query checks with `pnpm test:db` (Node.js 24+).
 
 # Building For Production
 

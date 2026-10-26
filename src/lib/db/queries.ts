@@ -3,13 +3,15 @@ import { db } from ".";
 import {
 	curriculum,
 	curriculumNode,
+	learningSession,
 	type NewCurriculum,
 	type NewCurriculumNode,
+	type NewLearningSession,
 } from "./schema";
 
-// Each node insert binds six values. Keep individual statements below D1's
-// SQLite variable limit, including room for future persisted node fields.
-const nodeInsertBatchSize = 15;
+// Each node binds seven values, including the default isComplete value.
+// Fourteen nodes use 98 parameters, below D1's limit of 100 per statement.
+const nodeInsertBatchSize = 14;
 
 type CurriculumSubtreeAccess =
 	| { scope: "all" }
@@ -107,4 +109,31 @@ export async function saveCurriculumTree(
 	]);
 
 	return newCurriculum.id;
+}
+
+/**
+ * Saves the durable output of session preparation. The Workflow instance ID is
+ * the primary key, so a retried step updates the same record.
+ */
+export async function savePreparedLearningSession(
+	newSession: NewLearningSession,
+) {
+	await db
+		.insert(learningSession)
+		.values(newSession)
+		.onConflictDoUpdate({
+			target: learningSession.id,
+			set: {
+				courseId: newSession.courseId,
+				userId: newSession.userId,
+				subtopicId: newSession.subtopicId,
+				outline: newSession.outline,
+				artifactPlan: newSession.artifactPlan,
+				artifactWorkflowId: newSession.artifactWorkflowId,
+				status: newSession.status,
+				updatedAt: new Date(),
+			},
+		});
+
+	return newSession.id;
 }

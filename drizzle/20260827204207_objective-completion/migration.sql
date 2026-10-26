@@ -1,0 +1,1 @@
+ALTER TABLE `curriculum_node` ADD `is_complete` integer DEFAULT false NOT NULL;

@@ -1,10 +1,12 @@
 import { generateText, Output, streamText } from "ai";
+import { ArtifactPlanSchema } from "#/lib/artifacts";
 import { type Subject, SubjectSchema } from "#/lib/curriculum";
 import {
 	type PassageContentUpdate,
 	passageContentUpdate,
 } from "#/lib/passage-stream";
 import { GeneratedPassageSchema } from "#/lib/passages";
+import { SessionOutlineSchema } from "#/lib/sessions";
 import { TINY_MODEL } from "@/ai/models";
 
 export async function generateCurriculumTree(prompt: string): Promise<Subject> {
@@ -43,4 +45,24 @@ export async function generateNextPassage(
 	}
 
 	return await result.output;
+}
+
+export async function generateSessionOutline(prompt: string) {
+	const result = await generateText({
+		model: TINY_MODEL,
+		output: Output.object({ schema: SessionOutlineSchema }),
+		prompt,
+	});
+
+	return result.output;
+}
+
+export async function generateSessionArtifactPlan(prompt: string) {
+	const result = await generateText({
+		model: TINY_MODEL,
+		output: Output.object({ schema: ArtifactPlanSchema }),
+		prompt,
+	});
+
+	return result.output;
 }

@@ -51,6 +51,10 @@ export const curriculumNode = sqliteTable(
 		name: text("name").notNull(),
 		level: text("level", { enum: curriculumTreeLevels }).notNull(),
 		position: integer("position").notNull(),
+		// Completion is meaningful only for objective rows.
+		isComplete: integer("is_complete", { mode: "boolean" })
+			.default(false)
+			.notNull(),
 		createdAt: integer("created_at", { mode: "timestamp_ms" })
 			.default(now)
 			.notNull(),

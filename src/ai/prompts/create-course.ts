@@ -1,4 +1,4 @@
-export function createCoursePrompt(
+export function buildCreateCoursePrompt(
 	strings: TemplateStringsArray,
 	...values: unknown[]
 ) {

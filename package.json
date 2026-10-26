@@ -15,7 +15,10 @@
     "lint": "biome lint",
     "check": "biome check",
     "deploy": "pnpm run build && wrangler deploy",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply bonsai_dev --local",
+    "test:db": "node --experimental-test-module-mocks --import tsx --test src/lib/db/*.test.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.28",

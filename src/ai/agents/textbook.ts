@@ -9,7 +9,7 @@ import {
 	passageClosingExcerpt,
 } from "#/lib/passages";
 import { generateNextPassage } from "../generate";
-import { nextPassagePrompt } from "../prompts/next-passage";
+import { buildNextPassagePrompt } from "../prompts/next-passage";
 
 export type TextbookState =
 	| {
@@ -222,7 +222,7 @@ export class TextbookAgent extends Agent<Env, TextbookState, TextbookProps> {
 			);
 		}
 
-		return nextPassagePrompt({
+		return buildNextPassagePrompt({
 			curriculumSubtree: this.state.curriculumSubtree,
 			previousPassage: this.state.continuation ?? null,
 		});

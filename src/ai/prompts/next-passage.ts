@@ -6,7 +6,7 @@ type NextPassagePromptContext = {
 	previousPassage: PassageContinuation | null;
 };
 
-export function nextPassagePrompt({
+export function buildNextPassagePrompt({
 	curriculumSubtree,
 	previousPassage,
 }: NextPassagePromptContext): string {

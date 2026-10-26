@@ -27,7 +27,17 @@
     {
       "name": "create-course-workflow",
       "binding": "CREATE_COURSE_WORKFLOW",
-      "class_name": "CreateCourseWorkflow",
+      "class_name": "CreateCourseWorkflow"
+    },
+    {
+      "name": "prepare-session-workflow",
+      "binding": "PREPARE_SESSION_WORKFLOW",
+      "class_name": "PrepareSessionWorkflow"
+    },
+    {
+      "name": "generate-artifact-workflow",
+      "binding": "GENERATE_ARTIFACT_WORKFLOW",
+      "class_name": "GenerateArtifactWorkflow"
     }
   ],
   "migrations": [
