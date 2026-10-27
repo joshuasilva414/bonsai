@@ -1,68 +1,105 @@
-import { generateText, Output, streamText } from "ai";
+import { chat, parsePartialJSON } from "@tanstack/ai";
+import { nanoid } from "nanoid";
 import { ArtifactPlanSchema } from "#/lib/artifacts";
 import { type Subject, SubjectSchema } from "#/lib/curriculum";
 import {
 	type PassageContentUpdate,
 	passageContentUpdate,
 } from "#/lib/passage-stream";
-import { GeneratedPassageSchema } from "#/lib/passages";
+import { type GeneratedPassage, GeneratedPassageSchema } from "#/lib/passages";
 import { SessionOutlineSchema } from "#/lib/sessions";
-import { TINY_MODEL } from "@/ai/models";
+import { createTinyModel } from "@/ai/models";
+
+const PassageContentSchema = GeneratedPassageSchema.pick({ content: true });
 
 export async function generateCurriculumTree(prompt: string): Promise<Subject> {
-	const { output } = await generateText({
-		model: TINY_MODEL,
-		output: Output.object({ schema: SubjectSchema }),
-		prompt,
+	return chat({
+		adapter: createTinyModel(),
+		outputSchema: SubjectSchema,
+		messages: [{ role: "user", content: prompt }],
+		threadId: nanoid(),
 	});
-
-	return output;
 }
 
 export async function generateNextPassage(
 	prompt: string,
 	abortSignal: AbortSignal,
 	onContent: (update: PassageContentUpdate) => void,
-) {
-	const result = streamText({
-		model: TINY_MODEL,
-		output: Output.object({ schema: GeneratedPassageSchema }),
-		prompt,
-		abortSignal,
-		reasoning: "none",
-	});
+): Promise<GeneratedPassage> {
+	abortSignal.throwIfAborted();
+	const abortController = new AbortController();
+	const abort = () => abortController.abort(abortSignal.reason);
+	abortSignal.addEventListener("abort", abort, { once: true });
 
 	let lastContent = "";
+	let raw = "";
+	let structuredMessageId: string | undefined;
+	let result: GeneratedPassage | undefined;
 
-	for await (const partialOutput of result.partialOutputStream) {
-		const content = partialOutput.content;
-		if (typeof content !== "string" || content === lastContent) continue;
-
+	function publishContent(content: string) {
+		if (content === lastContent) return;
 		const update = passageContentUpdate(lastContent, content);
-
 		lastContent = content;
 		onContent(update);
 	}
 
-	return await result.output;
+	try {
+		const stream = chat({
+			adapter: createTinyModel(),
+			outputSchema: GeneratedPassageSchema,
+			stream: true,
+			messages: [{ role: "user", content: prompt }],
+			threadId: nanoid(),
+			abortController,
+			reasoning: "off",
+		});
+
+		for await (const chunk of stream) {
+			abortSignal.throwIfAborted();
+			if (chunk.type === "RUN_ERROR") throw new Error(chunk.message);
+			if (chunk.type === "CUSTOM") {
+				if (chunk.name === "structured-output.start") {
+					structuredMessageId = chunk.value.messageId;
+					raw = "";
+				} else if (chunk.name === "structured-output.complete") {
+					result = chunk.value.object;
+					publishContent(result.content);
+				}
+			} else if (
+				chunk.type === "TEXT_MESSAGE_CONTENT" &&
+				chunk.messageId === structuredMessageId
+			) {
+				raw += chunk.delta;
+				// Only Markdown content is public; continuation metadata stays server-side.
+				const partial: unknown = parsePartialJSON(raw);
+				const parsed = PassageContentSchema.safeParse(partial);
+				if (parsed.success) publishContent(parsed.data.content);
+			}
+		}
+
+		abortSignal.throwIfAborted();
+		if (!result)
+			throw new Error("Passage stream ended without a complete output");
+		return result;
+	} finally {
+		abortSignal.removeEventListener("abort", abort);
+	}
 }
 
 export async function generateSessionOutline(prompt: string) {
-	const result = await generateText({
-		model: TINY_MODEL,
-		output: Output.object({ schema: SessionOutlineSchema }),
-		prompt,
+	return chat({
+		adapter: createTinyModel(),
+		outputSchema: SessionOutlineSchema,
+		messages: [{ role: "user", content: prompt }],
+		threadId: nanoid(),
 	});
-
-	return result.output;
 }
 
 export async function generateSessionArtifactPlan(prompt: string) {
-	const result = await generateText({
-		model: TINY_MODEL,
-		output: Output.object({ schema: ArtifactPlanSchema }),
-		prompt,
+	return chat({
+		adapter: createTinyModel(),
+		outputSchema: ArtifactPlanSchema,
+		messages: [{ role: "user", content: prompt }],
+		threadId: nanoid(),
 	});
-
-	return result.output;
 }

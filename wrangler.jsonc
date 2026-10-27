@@ -9,6 +9,9 @@
     "bindings": [{
       "name": "TextbookAgent",
       "class_name": "TextbookAgent"
+    }, {
+      "name": "WhiteboardAgent",
+      "class_name": "WhiteboardAgent"
     }]
   },
   "d1_databases": [{
@@ -44,6 +47,10 @@
     {
       "tag": "v1",
       "new_sqlite_classes": ["TextbookAgent"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["WhiteboardAgent"]
     }
   ]
 }

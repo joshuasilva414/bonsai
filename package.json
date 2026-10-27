@@ -18,15 +18,18 @@
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply bonsai_dev --local",
-    "test:db": "node --experimental-test-module-mocks --import tsx --test src/lib/db/*.test.ts"
+    "test:db": "node --experimental-test-module-mocks --import tsx --test src/lib/db/*.test.ts",
+    "test:ai": "node --experimental-test-module-mocks --import tsx --test src/ai/*.test.ts src/lib/passages.test.ts"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^4.0.28",
     "@ai-sdk/react": "^4.0.50",
     "@base-ui/react": "^1.7.0",
     "@better-auth/drizzle-adapter": "1.7.0-rc.4",
     "@shadcn/react": "^0.3.1",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/ai": "^1.0.0",
+    "@tanstack/ai-openai": "^1.0.0",
+    "@tanstack/ai-react": "^1.0.0",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
     "@tanstack/react-query-devtools": "latest",
@@ -47,6 +50,7 @@
     "katex": "^0.18.1",
     "lucide-react": "^1.28.0",
     "nanoid": "^6.0.1",
+    "re-resizable": "^6.11.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-markdown": "^10.1.0",
