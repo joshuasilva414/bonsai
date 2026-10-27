@@ -20,6 +20,7 @@ import { Route as CoursesCourseIdIndexRouteImport } from './routes/courses/$cour
 import { Route as CoursesCourseIdGraphRouteImport } from './routes/courses/$courseId/graph'
 import { Route as SessionTextbookIndexRouteImport } from './routes/session/textbook/index'
 import { Route as SessionTextbookCurriculumNodeIdRouteImport } from './routes/session/textbook/$curriculumNodeId'
+import { Route as SessionWhiteboardIndexRouteImport } from './routes/session/whiteboard/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -77,6 +78,11 @@ const SessionTextbookCurriculumNodeIdRoute =
     path: '/session/textbook/$curriculumNodeId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SessionWhiteboardIndexRoute = SessionWhiteboardIndexRouteImport.update({
+  id: '/session/whiteboard/',
+  path: '/session/whiteboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
   '/session/textbook/': typeof SessionTextbookIndexRoute
+  '/session/whiteboard/': typeof SessionWhiteboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId': typeof CoursesCourseIdIndexRoute
   '/session/textbook': typeof SessionTextbookIndexRoute
+  '/session/whiteboard': typeof SessionWhiteboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
   '/session/textbook/': typeof SessionTextbookIndexRoute
+  '/session/whiteboard/': typeof SessionWhiteboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
     | '/session/textbook/'
+    | '/session/whiteboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId'
     | '/session/textbook'
+    | '/session/whiteboard'
   id:
     | '__root__'
     | '/'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/session/textbook/$curriculumNodeId'
     | '/courses/$courseId/'
     | '/session/textbook/'
+    | '/session/whiteboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -172,6 +184,7 @@ export interface RootRouteChildren {
   SessionTextbookCurriculumNodeIdRoute: typeof SessionTextbookCurriculumNodeIdRoute
   CoursesCourseIdIndexRoute: typeof CoursesCourseIdIndexRoute
   SessionTextbookIndexRoute: typeof SessionTextbookIndexRoute
+  SessionWhiteboardIndexRoute: typeof SessionWhiteboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionTextbookCurriculumNodeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/whiteboard/': {
+      id: '/session/whiteboard/'
+      path: '/session/whiteboard'
+      fullPath: '/session/whiteboard/'
+      preLoaderRoute: typeof SessionWhiteboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -268,6 +288,7 @@ const rootRouteChildren: RootRouteChildren = {
   SessionTextbookCurriculumNodeIdRoute: SessionTextbookCurriculumNodeIdRoute,
   CoursesCourseIdIndexRoute: CoursesCourseIdIndexRoute,
   SessionTextbookIndexRoute: SessionTextbookIndexRoute,
+  SessionWhiteboardIndexRoute: SessionWhiteboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

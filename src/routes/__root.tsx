@@ -55,7 +55,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 				<ScriptOnce>{themeInitializer}</ScriptOnce>
 			</head>
-			<body className="font-sans antialiased [overflow-wrap:anywhere]">
+			<body className="font-sans antialiased overflow-wrap:anywhere">
 				<div className="site-shell">
 					<Header />
 					<div className="site-content">{children}</div>
