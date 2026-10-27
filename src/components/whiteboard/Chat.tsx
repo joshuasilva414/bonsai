@@ -1,8 +1,6 @@
 import { fetchServerSentEvents, useChat } from "@tanstack/ai-react";
 import { MoveDiagonal2Icon } from "lucide-react";
-import { nanoid } from "nanoid";
 import { Resizable } from "re-resizable";
-import { useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -14,14 +12,15 @@ import { MessageScrollerProvider } from "@/components/ui/message-scroller";
 import ChatContent from "@/components/whiteboard/ChatContent";
 import ChatInput from "@/components/whiteboard/ChatInput";
 
-export default function Chat() {
-	const [conversationId] = useState(() => nanoid());
-	const { messages, sendMessage, isLoading, error, stop } = useChat({
-		connection: fetchServerSentEvents(
-			`/agents/whiteboard-agent/${conversationId}`,
-		),
-		threadId: conversationId,
-	});
+export default function Chat({ conversationId }: { conversationId: string }) {
+	const { messages, sendMessage, isLoading, isHydrating, error, stop } =
+		useChat({
+			connection: fetchServerSentEvents(
+				`/agents/whiteboard-agent/${conversationId}`,
+			),
+			threadId: conversationId,
+			persistence: true,
+		});
 
 	return (
 		<div className="pointer-events-none absolute inset-4 bottom-2 z-350 sm:right-2">
@@ -72,16 +71,21 @@ export default function Chat() {
 								<CardTitle>Whiteboard chat</CardTitle>
 							</CardHeader>
 							<CardContent className="min-h-0 flex-1">
-								<ChatContent messages={messages} isLoading={isLoading} />
+								<ChatContent
+									messages={messages}
+									isLoading={isLoading}
+									isHydrating={isHydrating}
+								/>
 							</CardContent>
 							<CardFooter className="shrink-0 flex-col items-stretch gap-2">
 								{error && (
 									<p role="alert" className="text-sm text-destructive">
-										Could not complete the response. {error.message}
+										Chat error. {error.message}
 									</p>
 								)}
 								<ChatInput
 									busy={isLoading}
+									disabled={isHydrating}
 									onSend={sendMessage}
 									onStop={stop}
 								/>

@@ -21,6 +21,7 @@ import { Route as CoursesCourseIdGraphRouteImport } from './routes/courses/$cour
 import { Route as SessionTextbookIndexRouteImport } from './routes/session/textbook/index'
 import { Route as SessionTextbookCurriculumNodeIdRouteImport } from './routes/session/textbook/$curriculumNodeId'
 import { Route as SessionWhiteboardIndexRouteImport } from './routes/session/whiteboard/index'
+import { Route as SessionWhiteboardSessionIdRouteImport } from './routes/session/whiteboard/$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -83,6 +84,12 @@ const SessionWhiteboardIndexRoute = SessionWhiteboardIndexRouteImport.update({
   path: '/session/whiteboard/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SessionWhiteboardSessionIdRoute =
+  SessionWhiteboardSessionIdRouteImport.update({
+    id: '/session/whiteboard/$sessionId',
+    path: '/session/whiteboard/$sessionId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/session/whiteboard/$sessionId': typeof SessionWhiteboardSessionIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
   '/session/textbook/': typeof SessionTextbookIndexRoute
   '/session/whiteboard/': typeof SessionWhiteboardIndexRoute
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/session/whiteboard/$sessionId': typeof SessionWhiteboardSessionIdRoute
   '/courses/$courseId': typeof CoursesCourseIdIndexRoute
   '/session/textbook': typeof SessionTextbookIndexRoute
   '/session/whiteboard': typeof SessionWhiteboardIndexRoute
@@ -123,6 +132,7 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/courses/$courseId/graph': typeof CoursesCourseIdGraphRoute
   '/session/textbook/$curriculumNodeId': typeof SessionTextbookCurriculumNodeIdRoute
+  '/session/whiteboard/$sessionId': typeof SessionWhiteboardSessionIdRoute
   '/courses/$courseId/': typeof CoursesCourseIdIndexRoute
   '/session/textbook/': typeof SessionTextbookIndexRoute
   '/session/whiteboard/': typeof SessionWhiteboardIndexRoute
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
+    | '/session/whiteboard/$sessionId'
     | '/courses/$courseId/'
     | '/session/textbook/'
     | '/session/whiteboard/'
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
+    | '/session/whiteboard/$sessionId'
     | '/courses/$courseId'
     | '/session/textbook'
     | '/session/whiteboard'
@@ -167,6 +179,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/courses/$courseId/graph'
     | '/session/textbook/$curriculumNodeId'
+    | '/session/whiteboard/$sessionId'
     | '/courses/$courseId/'
     | '/session/textbook/'
     | '/session/whiteboard/'
@@ -182,6 +195,7 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   CoursesCourseIdGraphRoute: typeof CoursesCourseIdGraphRoute
   SessionTextbookCurriculumNodeIdRoute: typeof SessionTextbookCurriculumNodeIdRoute
+  SessionWhiteboardSessionIdRoute: typeof SessionWhiteboardSessionIdRoute
   CoursesCourseIdIndexRoute: typeof CoursesCourseIdIndexRoute
   SessionTextbookIndexRoute: typeof SessionTextbookIndexRoute
   SessionWhiteboardIndexRoute: typeof SessionWhiteboardIndexRoute
@@ -273,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionWhiteboardIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/whiteboard/$sessionId': {
+      id: '/session/whiteboard/$sessionId'
+      path: '/session/whiteboard/$sessionId'
+      fullPath: '/session/whiteboard/$sessionId'
+      preLoaderRoute: typeof SessionWhiteboardSessionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -286,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   CoursesCourseIdGraphRoute: CoursesCourseIdGraphRoute,
   SessionTextbookCurriculumNodeIdRoute: SessionTextbookCurriculumNodeIdRoute,
+  SessionWhiteboardSessionIdRoute: SessionWhiteboardSessionIdRoute,
   CoursesCourseIdIndexRoute: CoursesCourseIdIndexRoute,
   SessionTextbookIndexRoute: SessionTextbookIndexRoute,
   SessionWhiteboardIndexRoute: SessionWhiteboardIndexRoute,

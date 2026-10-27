@@ -12,16 +12,26 @@ import {
 type ChatContentProps = {
 	messages: readonly UIMessage[];
 	isLoading: boolean;
+	isHydrating: boolean;
 };
 
-export default function ChatContent({ messages, isLoading }: ChatContentProps) {
+export default function ChatContent({
+	messages,
+	isLoading,
+	isHydrating,
+}: ChatContentProps) {
 	return (
 		<MessageScroller>
 			<MessageScrollerViewport>
-				<MessageScrollerContent aria-live="polite" aria-busy={isLoading}>
+				<MessageScrollerContent
+					aria-live="polite"
+					aria-busy={isLoading || isHydrating}
+				>
 					{messages.length === 0 && (
 						<p className="text-sm text-muted-foreground">
-							Ask a question to start your learning session.
+							{isHydrating
+								? "Loading conversation…"
+								: "Ask a question to start your learning session."}
 						</p>
 					)}
 					{messages.map((message, index) => {

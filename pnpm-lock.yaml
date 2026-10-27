@@ -29,6 +29,9 @@ importers:
       '@tanstack/ai-openai':
         specifier: ^1.0.0
         version: 1.0.0(@tanstack/ai@1.0.0(zod@4.4.3))(undici@7.29.0)(ws@8.21.3)(zod@4.4.3)
+      '@tanstack/ai-persistence':
+        specifier: ^1.0.0
+        version: 1.0.0(@tanstack/ai@1.0.0(zod@4.4.3))
       '@tanstack/ai-react':
         specifier: ^1.0.0
         version: 1.0.0(@tanstack/ai@1.0.0(zod@4.4.3))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@4.4.3)
@@ -2473,6 +2476,15 @@ packages:
     resolution: {integrity: sha512-p0blsUs98FSnIXgYk8KMAbyBTWCHdZj4PyvhrUuO3vU4aNAnjlwunDyrqVhmP8gXA3k0oSUru4UAmXXKnN5j4g==}
     peerDependencies:
       '@tanstack/ai': ^1.0.0
+
+  '@tanstack/ai-persistence@1.0.0':
+    resolution: {integrity: sha512-IS+KFKm64fSGpL3wVIWK1d/OuB31NhNjVImCIdrFMYT6K4IEPfHvQchRzxXBeK4xUta5iki9bdOkQnvHjRQQmA==}
+    peerDependencies:
+      '@tanstack/ai': ^1.0.0
+      vitest: ^4.1.10
+    peerDependenciesMeta:
+      vitest:
+        optional: true
 
   '@tanstack/ai-react@1.0.0':
     resolution: {integrity: sha512-PFX+M5JoP69/16UnkT4MOL6iRNywi8QVecaDdRJLwX2MnVHjFArD6HFFyU7LOgf5IxLuqXd8XpODI6imgVRrDA==}
@@ -7901,6 +7913,11 @@ snapshots:
       - undici
       - ws
       - zod
+
+  '@tanstack/ai-persistence@1.0.0(@tanstack/ai@1.0.0(zod@4.4.3))':
+    dependencies:
+      '@tanstack/ai': 1.0.0(zod@4.4.3)
+      '@tanstack/ai-utils': 1.0.0
 
   '@tanstack/ai-react@1.0.0(@tanstack/ai@1.0.0(zod@4.4.3))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@4.4.3)':
     dependencies:

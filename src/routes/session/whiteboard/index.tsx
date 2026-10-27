@@ -1,14 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import Whiteboard from "#/components/whiteboard/Whiteboard";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createWhiteboardSession } from "#/functions/whiteboard";
 
 export const Route = createFileRoute("/session/whiteboard/")({
-	component: RouteComponent,
+	beforeLoad: async ({ preload }) => {
+		if (preload) return;
+		const session = await createWhiteboardSession();
+		throw redirect({
+			to: "/session/whiteboard/$sessionId",
+			params: { sessionId: session.id },
+			replace: true,
+		});
+	},
 });
-
-function RouteComponent() {
-	return (
-		<div className="absolute inset-4 rounded-lg border border-line overflow-hidden">
-			<Whiteboard />
-		</div>
-	);
-}

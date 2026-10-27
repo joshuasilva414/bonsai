@@ -9,13 +9,19 @@ import {
 
 type ChatInputProps = {
 	busy: boolean;
+	disabled?: boolean;
 	onSend: (text: string) => Promise<void>;
 	onStop: () => void;
 };
 
-export default function ChatInput({ busy, onSend, onStop }: ChatInputProps) {
+export default function ChatInput({
+	busy,
+	disabled = false,
+	onSend,
+	onStop,
+}: ChatInputProps) {
 	const [text, setText] = useState("");
-	const canSend = text.trim().length > 0 && !busy;
+	const canSend = text.trim().length > 0 && !busy && !disabled;
 
 	async function onSubmit(event: SubmitEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -34,6 +40,7 @@ export default function ChatInput({ busy, onSend, onStop }: ChatInputProps) {
 			<InputGroup>
 				<InputGroupTextarea
 					aria-label="Message the whiteboard assistant"
+					disabled={disabled}
 					value={text}
 					onChange={(event) => setText(event.target.value)}
 					onKeyDown={(event) => {
