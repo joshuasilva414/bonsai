@@ -11,6 +11,7 @@ import {
 import { MessageScrollerProvider } from "@/components/ui/message-scroller";
 import ChatContent from "@/components/whiteboard/ChatContent";
 import ChatInput from "@/components/whiteboard/ChatInput";
+import { useEditor } from "tldraw";
 
 export default function Chat({ conversationId }: { conversationId: string }) {
 	const { messages, sendMessage, isLoading, isHydrating, error, stop } =
@@ -21,6 +22,24 @@ export default function Chat({ conversationId }: { conversationId: string }) {
 			threadId: conversationId,
 			persistence: true,
 		});
+
+	const editor = useEditor();
+
+	const handleSend = async (message: string) => {
+		const snapshot = {
+			shapes: editor.getCurrentPageShapes().map((shape) => ({
+				id: shape.id,
+				type: shape.type === "geo" ? shape.props.geo : shape.type,
+				text: editor.getShapeUtil(shape).getText(shape),
+				bounds: editor.getShapePageBounds(shape),
+			}))
+		}
+		sendMessage(message, {
+			body: {
+				whiteboard: snapshot
+			}
+		})
+	}
 
 	return (
 		<div className="pointer-events-none absolute inset-4 bottom-2 z-350 sm:right-2">
@@ -86,7 +105,7 @@ export default function Chat({ conversationId }: { conversationId: string }) {
 								<ChatInput
 									busy={isLoading}
 									disabled={isHydrating}
-									onSend={sendMessage}
+									onSend={handleSend}
 									onStop={stop}
 								/>
 							</CardFooter>

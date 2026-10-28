@@ -24,6 +24,25 @@ const SessionSchema = z.object({
 	owner_id: z.string(),
 });
 const TranscriptSchema = z.object({ messages: z.string() });
+export const WhiteboardContextSchema = z.object({
+	shapes: z.array(
+		z.object({
+			id: z.string(),
+			type: z.string(),
+			text: z.string().optional(),
+			bounds: z.object({
+				x: z.number(),
+				y: z.number(),
+				w: z.number(),
+				h: z.number(),
+			}).optional(),
+		})
+	)
+});
+
+export type WhiteboardContext = z.infer<
+	typeof WhiteboardContextSchema
+>;
 
 /** One Agent owns one session. Ownership is assigned only through server-side RPC. */
 export function createWhiteboardStore(database: WhiteboardDatabase) {
