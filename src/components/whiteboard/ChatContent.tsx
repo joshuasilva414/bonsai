@@ -50,7 +50,9 @@ export default function ChatContent({
 									<MessageContent>
 										<Bubble
 											align={align}
-											variant={message.role === "user" ? "default" : "tinted"}
+											variant={
+												message.role === "user" ? "default" : "secondary"
+											}
 										>
 											<BubbleContent className="whitespace-pre-wrap">
 												{text}

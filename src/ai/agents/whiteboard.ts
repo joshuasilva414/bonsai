@@ -9,6 +9,7 @@ import { reconstructChat, withPersistence } from "@tanstack/ai-persistence";
 import { Agent } from "agents";
 import { auth } from "#/lib/auth";
 import { createWhiteboardStore } from "./whiteboard-store";
+import { createShapeDef } from "#/ai/agents/whiteboard/tools";
 import { WhiteboardContextSchema } from "./whiteboard-store";
 import type { ChatMiddleware, ModelMessage } from "@tanstack/ai";
 
@@ -92,6 +93,7 @@ export class WhiteboardAgent extends Agent<Env> {
 				...(params.resume ? { resume: params.resume } : {}),
 				abortController,
 				middleware: [withPersistence(this.store.persistence), whiteboardContext],
+				tools: [createShapeDef],
 				systemPrompts: [
 					"You are Bonsai, a helpful learning assistant in a whiteboard session. Explain ideas clearly and concisely. You cannot see or edit the whiteboard yet. Ask the learner to describe it when needed, and never claim to have changed it.",
 				],

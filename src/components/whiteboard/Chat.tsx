@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { fetchServerSentEvents, useChat } from "@tanstack/ai-react";
 import { MoveDiagonal2Icon } from "lucide-react";
 import { Resizable } from "re-resizable";
@@ -11,38 +12,66 @@ import {
 import { MessageScrollerProvider } from "@/components/ui/message-scroller";
 import ChatContent from "@/components/whiteboard/ChatContent";
 import ChatInput from "@/components/whiteboard/ChatInput";
-import { useEditor } from "tldraw";
+import { useEditor, createShapeId, toRichText } from "tldraw";
+import { createShapeDef } from "#/ai/agents/whiteboard/tools";
+import "./Chat.css";
+import { buildEditorContext } from "#/lib/whiteboard/context";
 
 export default function Chat({ conversationId }: { conversationId: string }) {
+
+	const editor = useEditor();
+
+	const tools = useMemo(
+		() => [
+			createShapeDef.client((shape, context) => {
+				const id = createShapeId(context?.toolCallId);
+
+				if (!editor.getShape(id)) {
+					editor.markHistoryStoppingPoint("create-shape");
+					editor.createShape({
+						id,
+						type: "geo",
+						parentId: editor.getCurrentPageId(),
+						x: shape.x,
+						y: shape.y,
+						props: {
+							geo: shape.type,
+							w: shape.w,
+							h: shape.h,
+							richText: toRichText(shape.text),
+						},
+					});
+				}
+
+				return { id };
+			}),
+		],
+		[editor],
+	);
+
+	const connection = useMemo(() => fetchServerSentEvents(
+		`/agents/whiteboard-agent/${conversationId}`,
+		() => ({
+			body: {
+				whiteboard: buildEditorContext(editor)
+			}
+		})
+	), [conversationId, editor])
+
 	const { messages, sendMessage, isLoading, isHydrating, error, stop } =
 		useChat({
-			connection: fetchServerSentEvents(
-				`/agents/whiteboard-agent/${conversationId}`,
-			),
+			tools,
+			connection,
 			threadId: conversationId,
 			persistence: true,
 		});
 
-	const editor = useEditor();
-
 	const handleSend = async (message: string) => {
-		const snapshot = {
-			shapes: editor.getCurrentPageShapes().map((shape) => ({
-				id: shape.id,
-				type: shape.type === "geo" ? shape.props.geo : shape.type,
-				text: editor.getShapeUtil(shape).getText(shape),
-				bounds: editor.getShapePageBounds(shape),
-			}))
-		}
-		sendMessage(message, {
-			body: {
-				whiteboard: snapshot
-			}
-		})
+		sendMessage(message)
 	}
 
 	return (
-		<div className="pointer-events-none absolute inset-4 bottom-2 z-350 sm:right-2">
+		<div className="whiteboard-chat pointer-events-none absolute inset-4 bottom-2 z-350 sm:right-2">
 			<Resizable
 				className="pointer-events-auto"
 				style={{ position: "absolute", bottom: 0, right: 0 }}

@@ -23,7 +23,9 @@ const SessionSchema = z.object({
 	session_id: z.string(),
 	owner_id: z.string(),
 });
+
 const TranscriptSchema = z.object({ messages: z.string() });
+
 export const WhiteboardContextSchema = z.object({
 	shapes: z.array(
 		z.object({

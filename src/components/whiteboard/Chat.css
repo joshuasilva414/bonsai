@@ -1,0 +1,17 @@
+.whiteboard-chat {
+	--background: var(--bonsai-paper);
+	--foreground: var(--bonsai-ink);
+	--card: var(--bonsai-paper);
+	--card-foreground: var(--bonsai-ink);
+	--primary: var(--bonsai-action);
+	--primary-foreground: var(--bonsai-action-foreground);
+	--secondary: var(--bonsai-mist);
+	--secondary-foreground: var(--bonsai-ink);
+	--muted: var(--bonsai-mist);
+	--muted-foreground: var(--bonsai-muted);
+	--accent: var(--bonsai-mist);
+	--accent-foreground: var(--bonsai-ink);
+	--border: var(--bonsai-border);
+	--input: var(--bonsai-border);
+	--ring: var(--bonsai-green);
+}
