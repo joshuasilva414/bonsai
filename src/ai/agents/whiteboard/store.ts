@@ -23,7 +23,7 @@ const SessionSchema = z.object({
 	session_id: z.string(),
 	owner_id: z.string(),
 });
-
+const DocumentRowSchema = z.object({ snapshot: z.string() });
 const TranscriptSchema = z.object({ messages: z.string() });
 
 export const WhiteboardContextSchema = z.object({
@@ -52,6 +52,10 @@ export function createWhiteboardStore(database: WhiteboardDatabase) {
 		id INTEGER PRIMARY KEY CHECK (id = 1),
 		session_id TEXT NOT NULL,
 		owner_id TEXT NOT NULL
+	)`);
+	database.exec(`CREATE TABLE IF NOT EXISTS whiteboard_document (
+	  id INTEGER PRIMARY KEY CHECK (id = 1),
+	  snapshot TEXT NOT NULL
 	)`);
 	database.exec(`CREATE TABLE IF NOT EXISTS whiteboard_transcript (
 		thread_id TEXT PRIMARY KEY,
@@ -126,6 +130,22 @@ export function createWhiteboardStore(database: WhiteboardDatabase) {
 		getSession(userId: string) {
 			const existing = session();
 			return existing?.owner_id === userId ? { id: existing.session_id } : null;
+		},
+		saveDocument(serialized: string) {
+			database.exec(
+				`INSERT INTO whiteboard_document (id, snapshot) VALUES (1, ?)
+				   ON CONFLICT(id) DO UPDATE SET snapshot = excluded.snapshot`,
+				serialized,
+			);
+		},
+		loadDocument() {
+			const row = database
+				.exec("SELECT snapshot FROM whiteboard_document WHERE id = 1")
+				.toArray()[0];
+
+			return row === undefined
+				? null
+				: DocumentRowSchema.parse(row).snapshot; // 3
 		},
 		owns(userId: string, threadId: string) {
 			const existing = session();

@@ -29,11 +29,29 @@ export const createWhiteboardSession = createServerFn({
 });
 
 export const getWhiteboardSession = createServerFn({ method: "GET" })
-	.validator(z.object({ sessionId: z.string().regex(/^[A-Za-z0-9_-]{21}$/) }))
+	.validator(z.object({
+		sessionId: z.string().regex(/^[A-Za-z0-9_-]{21}$/),
+	}))
 	.handler(async ({ data }) => {
-		const userId = await requireUserId();
+		const userId = await requireUserId(); // 1
 		const agent = await getAgentByName(env.WhiteboardAgent, data.sessionId);
 		using session = await agent.getSession(userId);
 		if (!session) throw notFound();
-		return { id: session.id };
+
+		return {
+			id: session.id,
+			document: await agent.loadDocument(userId), // 2
+		};
+	});
+
+export const saveWhiteboardDocument = createServerFn({ method: "POST" })
+	.validator(z.object({
+		sessionId: z.string().regex(/^[A-Za-z0-9_-]{21}$/),
+		document: z.string(),
+	}))
+	.handler(async ({ data }) => {
+		const userId = await requireUserId(); // 3
+		const agent = await getAgentByName(env.WhiteboardAgent, data.sessionId);
+		await agent.saveDocument(userId, data.document); // 4
+		return { saved: true };
 	});

@@ -12,7 +12,7 @@ function RouteComponent() {
 	const session = Route.useLoaderData();
 	return (
 		<div className="absolute inset-4 rounded-lg border border-line overflow-hidden">
-			<Whiteboard key={session.id} sessionId={session.id} />
+			<Whiteboard key={session.id} sessionId={session.id} initialDocument={session.document} />
 		</div>
 	);
 }

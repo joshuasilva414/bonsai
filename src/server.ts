@@ -2,7 +2,7 @@ import handler from "@tanstack/react-start/server-entry";
 import { routeAgentRequest } from "agents";
 
 export { TextbookAgent } from "./ai/agents/textbook";
-export { WhiteboardAgent } from "./ai/agents/whiteboard";
+export { WhiteboardAgent } from "./ai/agents/whiteboard/index";
 export { CreateCourseWorkflow, PrepareSessionWorkflow, GenerateArtifactWorkflow } from "./workflows/bonsai";
 
 export default {

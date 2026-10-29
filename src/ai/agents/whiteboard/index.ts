@@ -8,9 +8,8 @@ import { createOpenaiChat } from "@tanstack/ai-openai";
 import { reconstructChat, withPersistence } from "@tanstack/ai-persistence";
 import { Agent } from "agents";
 import { auth } from "#/lib/auth";
-import { createWhiteboardStore } from "./whiteboard-store";
+import { createWhiteboardStore, WhiteboardContextSchema } from "#/ai/agents/whiteboard/store";
 import { createShapeDef } from "#/ai/agents/whiteboard/tools";
-import { WhiteboardContextSchema } from "./whiteboard-store";
 import type { ChatMiddleware, ModelMessage } from "@tanstack/ai";
 
 export class WhiteboardAgent extends Agent<Env> {
@@ -23,6 +22,22 @@ export class WhiteboardAgent extends Agent<Env> {
 
 	getSession(userId: string) {
 		return this.store.getSession(userId);
+	}
+
+	loadDocument(userId: string) {
+		if (!this.store.getSession(userId)) {
+			throw new Error("Session not found"); // 1
+		}
+
+		return this.store.loadDocument(); // 2
+	}
+
+	saveDocument(userId: string, serialized: string) {
+		if (!this.store.getSession(userId)) {
+			throw new Error("Session not found"); // 1
+		}
+
+		this.store.saveDocument(serialized); // 3
 	}
 
 	async onRequest(request: Request): Promise<Response> {
